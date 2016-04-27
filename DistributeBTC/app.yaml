@@ -1,0 +1,74 @@
+application: distributebtc
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /robots\.txt
+  static_files: robots.txt
+  upload: robots\.txt
+
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /stylesheets
+  static_dir: stylesheets
+
+- url: /admin
+  script: distributebtc.application
+  login: admin
+
+- url: /editDistributer
+  script: distributebtc.application
+  login: admin
+
+- url: /saveDistributer
+  script: distributebtc.application
+  login: admin
+
+- url: /deleteDistributer
+  script: distributebtc.application
+  login: admin
+
+- url: /confirm
+  script: distributebtc.application
+  login: admin
+
+- url: /getAddress
+  script: distributebtc.application
+  login: admin
+
+- url: /doDistributing
+  script: distributebtc.application
+  login: admin
+
+
+- url: /
+  script: distributebtc.application
+
+- url: /distributer
+  script: distributebtc.application
+
+- url: /updateDistributer
+  script: distributebtc.application
+
+
+- url: /documentation
+  script: distributebtc.application
+
+inbound_services:
+- warmup
+
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest
+- name: pycrypto
+  version: "2.6"
+
+builtins:
+- remote_api: on
+

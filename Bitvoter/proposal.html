@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+</head>
+<body onload="fillValues()">
+
+<script language="javascript" type='text/javascript'>
+    function fillValues(){
+        var proposalAddressField = document.getElementById('proposalAddress');
+        proposalAddressField.value = '{{proposalAddress}}';
+
+        var registrationAddressField = document.getElementById('registrationAddress');
+        registrationAddressField.value = '{{regAddress}}';
+
+        var registrationXPUBField = document.getElementById('registrationXPUB');
+        registrationXPUBField.value = '{{regXPUB}}';
+
+        showOptimalInputs();
+    }
+
+    function reloadPage(){
+        var address = document.getElementById('address').value;
+        var proposal = document.getElementById('proposal').value;
+        var options = document.getElementById('options').value;
+        var cost = document.getElementById('cost').value;
+        var digits = document.getElementById('digits').value;
+        var weights = document.getElementById('weights').value;
+        var regAddress = document.getElementById('registrationAddress').value;
+        var regXPUB = document.getElementById('registrationXPUB').value;
+        var regBlock = document.getElementById('registrationBlockheight').value;
+
+        options = options.replace(/(\r\n|\n|\r)/gm, "|");
+
+        var url = "?address=" + address;
+        if (proposal != ''){
+            url += "&proposal=" + proposal;
+        }
+
+        if (options != ''){
+            url += "&options=" + options;
+        }
+
+        if (cost > 0){
+            url += "&cost=" + cost;
+        }
+
+        if (digits > 0){
+            url += "&digits=" + digits;
+        }
+
+        if (weights != ''){
+            url += "&weights=" + weights;
+        }
+
+        if (regAddress != ''){
+            url += "&regAddress=" + regAddress;
+        }
+
+        if (regXPUB != ''){
+            url += "&regXPUB=" + regXPUB;
+        }
+
+        if (regBlock != ''){
+            url += "&regBlock=" + regBlock;
+        }
+
+
+        window.location = url;
+    }
+
+    function showOptimalInputs(){
+        var weights = document.getElementById('weights').value;
+
+        if (weights == 'Value' || weights == 'Equal'){
+            document.getElementById('registrationAddressdiv').style.display = 'none';
+            document.getElementById('registrationXPUBdiv').style.display = 'none';
+            document.getElementById('registrationBlockheightdiv').style.display = 'none';
+        }
+
+        else if (weights == 'SIL'){
+            document.getElementById('registrationAddressdiv').style.display = 'block';
+            document.getElementById('registrationXPUBdiv').style.display = 'none';
+            document.getElementById('registrationBlockheightdiv').style.display = 'block';
+        }
+        else if (weights == 'LBL' || weights == 'LRL' || weights == 'LSL'){
+            document.getElementById('registrationAddressdiv').style.display = 'block';
+            document.getElementById('registrationXPUBdiv').style.display = 'block';
+            document.getElementById('registrationBlockheightdiv').style.display = 'block';
+        }
+
+
+
+    }
+
+
+</script>
+
+    {{ navigationHTML|safe }}
+
+    <div id="wrapper">
+            <br><br>
+            {% if address == '' or proposal == ''%}
+
+
+            <div class="SpellTitle">Chapter 4: Bitvoter proposal</div>
+
+            <div class="SpellDescription">
+                <p>When a group of individuals pool together their money, sometimes they will need to make decisions
+                    as a group. Here is a tool to facilitate and record the decision making process on the blockchain.
+                    Once all participants have voiced their opinion, the <b><a href="/results">results</a></b> can be revealed.</p>
+
+                <p>First you need to make a proposal and determine the possible options. Keep the options as short as
+                    possible. The proposal can be any kind of multi-choice question you can think of.</p>
+
+                <p>Optionally, you can specify how the votes will be weighted. This can be ‘1 address 1 vote’ or by the
+                    value that was sent. Its also possible to use a SIL, LBL, LRL or LSL as the weights.</p>
+
+                <p>This will generate a printable page containing all the information needed for the proposal,
+                    including QR-codes for each option.</p>
+
+                <p>A proposalhash is added so other participants can easily verify they are talking about the same
+                    proposal and includes the same address, proposal and options.
+                    If any details are changed, the proposalhash will be different.</p>
+
+                <p>To cast their vote, the only thing the users need to do is scan the QR code with their wallet
+                    and send a transaction with a specific amount of bitcoin. If the votes will be weighted, it is
+                    important to remind the users they need to send the bitcoin from the same address that they
+                    used to register with a SIL.</p>
+
+
+            </div>
+
+
+
+            <br><br>
+
+
+            <div id="Inputs" class="form">
+
+
+                <form action="/" method="post">
+
+                        <div class="field-wrap">
+                            <label>Bitcoin address <span class="req">*</span></label>
+                            <input id="address" type="text" required autocomplete="off">
+                        </div>
+
+
+                        <div class="field-wrap">
+                            <label>Proposal <span class="req">*</span></label>
+                            <input id="proposal" type="text" required autocomplete="off">
+                        </div>
+
+                        <div class="field-wrap">
+                            <label>Enter all options, 1 per line <span class="req">*</span></label>
+                            <textarea id="options" type="text" required autocomplete="off" rows="5" required></textarea>
+                        </div>
+
+
+                        <div class="field-wrap">
+                            <label>Vote cost <span class="req">*</span></label>
+                            <input id="cost" type="number" value="{{cost}}" style="width: 5em" required/>
+                        </div>
+
+                        <div class="field-wrap">
+                            <label>Significant digits <span class="req">*</span></label>
+                            <input id="digits" type="number" value="{{digits}}" style="width: 5em" required/>
+                        </div>
+
+
+                        <div  class="field-wrap">
+                            <label>Weights</label>
+                            <select id="weights" onchange="showOptimalInputs();" title="Weights">
+                              <option value="Value" {% if weights == 'Value' %}selected{% endif %}>Value</option>
+                              <option value="Equal" {% if weights == 'Equal' %}selected{% endif %}>Equal</option>
+                              <option value="SIL" {% if weights == 'SIL' %}selected{% endif %}>Simplified Inputs List</option>
+                              <option value="LBL" {% if weights == 'LBL' %}selected{% endif %}>Linked Balance List</option>
+                              <option value="LRL" {% if weights == 'LRL' %}selected{% endif %}>Linked Received List</option>
+                              <option value="LSL" {% if weights == 'LSL' %}selected{% endif %}>Linked Sent List</option>
+                            </select>
+
+                        </div>
+
+
+                        <div id="registrationAddressdiv" class="field-wrap">
+                            <label>Registration Address <span class="req">*</span></label>
+                            <input id="registrationAddress" type="text" required autocomplete="off">
+                        </div>
+
+
+                        <div id="registrationXPUBdiv" class="field-wrap">
+                            <label>Registration XPUB <span class="req">*</span></label>
+                            <input id="registrationXPUB" type="text" required autocomplete="off">
+                        </div>
+
+
+                        <div id="registrationBlockheightdiv" class="field-wrap">
+                            <label>Registration block height</label>
+                            <input id="registrationBlockheight" type="number" value="{{regBlock}}" style="width: 7em"/>
+                        </div>
+
+
+
+
+
+                    <div class="button center" onclick="reloadPage()">Show Options</div>
+
+                </form>
+
+            </div>
+            {% endif %}
+
+
+
+            <br><br>
+            {% if error != '' %}
+                <div class="ErrorMessage">Error: {{error}}</div>
+            {% else %}
+                <div id="proposal-header">{{proposal}}</div>
+
+
+                <div id="optionsCards">
+
+                    {% for key, value in options %}
+
+                        <div class="optionCard">
+                            {% if value.row == 'Even' %}
+                                <div class="optionID">{{key}}</div>
+                                <div class="optionResult">{{value.description}}</div>
+                                <div class="optionQR"><img id="QR" class="QRcode center" src="{{value.QR}}"></div>
+                            {% else %}
+                                <div class="optionQR"><img id="QR" class="QRcode center" src="{{value.QR}}"></div>
+                                <div class="optionResult">{{value.description}}</div>
+                                <div class="optionID">{{key}}</div>
+                            {% endif %}
+
+
+
+
+                        </div>
+
+                    {% endfor %}
+
+
+                </div>
+
+
+                {% if address != '' and proposal != '' and cost > 0 and digits > 0 %}
+                    <div class="resultsLink">View <a href="{{resultsURL}}">results</a></div>
+                    <div id="proposal-Card">
+
+
+                        <div id="proposal-Info">
+                            Proposal information:
+                            <div class="proposal-Label">Proposal address:</div>
+                            <div id="proposal-Address"><a href="https://www.blocktrail.com/BTC/address/{{address}}">{{address}}</a></div>
+
+                            <div class="proposal-Label">Vote cost:</div>
+                            <div id="proposal-VoteCost">{{cost * 0.00000001}} BTC</div>
+
+                            <div class="proposal-Label">Significant digits:</div>
+                            <div id="proposal-SignificantDigits">{{digits}}</div>
+
+                            <div class="proposal-Label">Proposal Hash:</div>
+                            <div id="proposal-ProposalHash">{{proposalHash}}</div>
+                        </div>
+
+                        {% if weights != ''%}
+                        <div id="proposal-OptionalInfo">
+                            Votes will be weighted according to the following parameters:
+                            {% if weights != ''%}
+                                <div class="proposal-Label">Weights:</div>
+                                <div id="proposal-Weights">{{weights}}</div>
+                            {% endif %}
+
+                            {% if regAddress != ''%}
+                                <div class="proposal-Label">Registration address:</div>
+                                <div id="proposal-RegAddress">{{regAddress}}</div>
+                            {% endif %}
+
+                            {% if regXPUB != ''%}
+                                <div class="proposal-Label">Registration XPUB:</div>
+                                <div id="proposal-RegXPUB">{{regXPUB}}</div>
+                            {% endif %}
+
+                            {% if regBlock != 0 %}
+                                <div class="proposal-Label">Registration block height:</div>
+                                <div id="proposal-RegBlock">{{regBlock}}</div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    </div>
+
+                {% endif %}
+            {% endif %}
+
+
+
+
+
+            <br><br>
+
+
+        {{ googleAnalyticsHTML|safe }}
+    </div>
+    {{ footerHTML|safe }}
+</body>
+</html>
+{% endautoescape %}

@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+
+
+</head>
+
+<body>
+    {{ navigationHTML|safe }}
+    <div ID="wrapper">
+
+        <div class="navigationTrail">
+            <a href="/admin?" >Admin home</a>
+            {% if wellID != 0 %}
+            > <a href="/well?wellID={{wellID}}" >{{well.name}}</a>
+            {% endif %}
+            {% if campaignID != 0 %}
+            > <a href="/campaign?wellID={{wellID}}&campaignID={{campaignID}}" >{{campaign.name}}</a>
+            {% endif %}
+        </div>
+
+        <div id="campaignForm">
+
+
+            <form action="/saveCampaign" method="post" class="form">
+            <h1>Campaign</h1>
+            <div>
+                <input name="WellID" type="hidden" value="{{wellID}}">
+                <input name="CampaignID" type="hidden" value="{{campaignID}}">
+                <div class="field-wrap">
+                    Name<input name="CampaignName" type="text" value="{{campaign.name}}" size="100" required autocomplete="off">
+                </div>
+
+                <div class="field-wrap">
+                    Description<textarea rows="20" cols="100" name="CampaignDescription" required autocomplete="off" >{{campaign.description}}</textarea>
+                </div>
+
+                <div class="field-wrap">
+                    Target (in Satoshis)<input name="CampaignTarget" type="number" value="{{campaign.target}}" size="13" required autocomplete="off">
+                </div>
+
+
+                <div class="field-wrap">
+                    Youtube<input name="CampaignYoutube" type="text" value="{{campaign.youtube}}" size="13" autocomplete="off">
+                </div>
+            </div>
+            <input class="button center" type="submit" name="saveChanges" value="Save" >
+            </form>
+
+            {% if campaignID != 0 %}
+                <div class="milestonesHeader">Milestones</div>
+                <div id="milestonesTable">
+                    <table class="flatTable">
+                        <tr>
+                            <th class="cell">Percent</th>
+                            <th class="cell">Name</th>
+                            <th class="cell">Action</th>
+                            <th class="cell">delete</th>
+                        </tr>
+
+                        {% for milestone in milestones%}
+                        <tr>
+
+                            <td class="cell">{{ milestone.percent }}</td>
+                            <td class="cell"><a href="/milestone?wellID={{wellID}}&campaignID={{campaignID}}&milestoneID={{milestone.key.id()}}" >{{ milestone.name }}</a></td>
+                            <td class="cell">{{ milestone.action }}</td>
+                            <td class="cell"><a href="/confirm?wellID={{wellID}}&campaignID={{campaignID}}&milestoneID={{milestone.key.id()}}" ><img class="deleteIcon" src="stylesheets/images/deleteIcon.png" alt="Delete"></a></td>
+
+
+                        </tr>
+                        {% endfor %}
+                    </table>
+
+
+                    <a class="buttonDiv" href="/milestone?wellID={{wellID}}&campaignID={{campaignID}}" >
+                        <div id="createMilestoneButton" class="button center">New milestone</div>
+                    </a>
+
+                </div>
+            {% endif %}
+        </div>
+
+
+        <div style="clear: both;"></div>
+
+
+        <div class="navigationTrail">
+            <a href="/admin?" >Admin home</a>
+            {% if wellID != 0 %}
+            > <a href="/well?wellID={{wellID}}" >{{well.name}}</a>
+            {% endif %}
+            {% if campaignID != 0 %}
+            > <a href="/campaign?wellID={{wellID}}&campaignID={{campaignID}}" >{{campaign.name}}</a>
+            {% endif %}
+        </div>
+
+        {{ googleAnalyticsHTML|safe }}
+        <div class="push"></div>
+    </div>
+    {{ footerHTML|safe }}
+
+</body>
+</html>
+{% endautoescape %}

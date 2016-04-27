@@ -1,0 +1,104 @@
+application: bitcoinwells
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /robots\.txt
+  static_files: robots.txt
+  upload: robots\.txt
+
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /stylesheets
+  static_dir: stylesheets
+
+- url: /admin
+  script: bitcoinwells.application
+  login: admin
+
+- url: /confirm
+  script: bitcoinwells.application
+  login: admin
+
+- url: /well
+  script: bitcoinwells.application
+  login: admin
+
+- url: /deleteWell
+  script: bitcoinwells.application
+  login: admin
+
+- url: /saveWell
+  script: bitcoinwells.application
+  login: admin
+
+- url: /campaign
+  script: bitcoinwells.application
+  login: admin
+
+- url: /saveCampaign
+  script: bitcoinwells.application
+  login: admin
+
+- url: /deleteCampaign
+  script: bitcoinwells.application
+  login: admin
+
+
+- url: /updateStartAmounts
+  script: bitcoinwells.application
+  login: admin
+
+
+- url: /checkSendMail
+  script: bitcoinwells.application
+  login: admin
+
+- url: /milestone
+  script: bitcoinwells.application
+  login: admin
+
+- url: /saveMilestone
+  script: bitcoinwells.application
+  login: admin
+
+- url: /deleteMilestone
+  script: bitcoinwells.application
+  login: admin
+
+
+
+- url: /documentation
+  script: bitcoinwells.application
+
+- url: /
+  script: bitcoinwells.application
+
+
+- url: /updateWell
+  script: bitcoinwells.application
+
+- url: /updateCampaign
+  script: bitcoinwells.application
+
+- url: /updateMilestone
+  script: bitcoinwells.application
+
+inbound_services:
+- warmup
+
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest
+- name: pycrypto
+  version: "2.6"
+
+builtins:
+- remote_api: on
+

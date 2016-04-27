@@ -1,0 +1,97 @@
+
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+
+</head>
+
+<body>
+
+    {{ navigationHTML|safe }}
+    <div ID="wrapper">
+
+        <div class="navigationTrail">
+            <a href="/admin?" >Admin home</a>
+        </div>
+
+        <div id="FilterDiv">
+                <div class="field-wrap">
+                    <label>Filter distributers</label>
+                    <select id="Filter" onchange="applyFilter();" style="width: 7em;">
+                        <option value="All" {% if status == 'All' %}selected{% endif %}>All</option>
+                        <option value="Pending" {% if status == 'Pending' %}selected{% endif %}>Pending</option>
+                        <option value="Active" {% if status == 'Active' %}selected{% endif %}>Active</option>
+                        <option value="Disabled" {% if status == 'Disabled' %}selected{% endif %}>Disabled</option>
+                    </select>
+                </div>
+        </div>
+
+        <div ID="distributersTable">
+
+            <table class="flatTable">
+            <tr>
+                <th class="cell">Name</th>
+                <th class="cell">Distribution</th>
+                <th class="cell">Visibility</th>
+                <th class="cell">Type</th>
+                <th class="cell">Status</th>
+                <th class="cell">Threshold</th>
+                <th class="cell">Minimum amount</th>
+                <th class="cell">Date</th>
+                <th class="cell">Delete</th>
+            </tr>
+
+                {% for distributer in distributers%}
+                <tr>
+                    <td class="cell"><a href="editDistributer?distributerID={{distributer.key.id()}}">{{ distributer.name}}</a></td>
+                    <td class="cell">{{ distributer.distributionSource }}</td>
+                    <td class="cell">{{ distributer.visibility }}</td>
+                    <td class="cell">{{ distributer.addressType }}</td>
+                    <td class="cell">{{ distributer.status }}</td>
+                    <td class="cell">{{ distributer.threshold }}</td>
+                    <td class="cell">{{ distributer.minimumAmount }}</td>
+                    <td class="cell">{{ distributer.date.strftime("%Y-%m-%d %H:%M") }}</td>
+                    <td class="cell"><a href="confirm?distributerID={{distributer.key.id()}}"><img class="deleteIcon" src="stylesheets/images/deleteIcon.png" alt="Delete"></a></td>
+                </tr>
+                {% endfor %}
+
+            </table>
+
+
+        <a class="buttonDiv" href="/editDistributer" >
+            <div class="button center createDistributerButton">New distributer</div>
+        </a>
+
+        <div style="clear: both;"></div>
+
+    </div>
+        <div class="navigationTrail">
+            <a href="/admin?" >Admin home</a>
+        </div>
+
+        {{ googleAnalyticsHTML|safe }}
+        <div class="push"></div>
+    </div>
+  </div>
+  {{ footerHTML|safe }}
+
+    <script language="javascript" type="text/javascript">
+        function applyFilter(){
+
+            var status = document.getElementById('Filter').value;
+            window.open(
+              "/admin?status=" + status,
+              "_parent"
+
+            );
+        }
+    </script>
+
+  </body>
+</html>
+{% endautoescape %}

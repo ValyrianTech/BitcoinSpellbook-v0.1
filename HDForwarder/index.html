@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+{% if socialButtons == True%}
+    <script type="text/javascript">var switchTo5x=true;</script>
+    <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+    <script type="text/javascript">stLight.options({publisher: "2dd80519-ff1c-4cf4-bd97-c80da5017ca8", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+{% endif %}
+
+</head>
+
+<body>
+
+    {{ navigationHTML|safe }}
+    <div ID="wrapper">
+
+            <br><br>
+            {% if forwarderID == 0 %}
+            <div class="SpellTitle">Chapter 6: HDForwarder</div>
+
+            <div class="SpellDescription">
+                <p>In the previous chapters I have taught you a few spells, now it is time to move on to something even more powerful: enchantments.</p>
+
+                <p>This enchantment will turn any address into a forwarder. You can have as many forwarders as you want. To enchant an address you will need to access the admin panel, which is only accessible to the one that that performed the summoning ritual.</p>
+
+                <p>First you must choose the address to enchant. Since an enchanted address will actually send a transaction when it receives bitcoin, you will need to enter a private key. There are 2 ways to select an address, by entering a private key directly or by choosing an index number of the built-in BIP44 hot wallet. To use the BIP44 wallet, the wallet seed must be provided in the parameters of the app. Keep in mind the hot wallet should not be used for anything else!</p>
+
+                <p>Besides an address the second most important parameter to specify is an XPUB key. This will determine where the amounts are forwarded to.</p>
+
+                <p>You can give an forwarder a name, as well as a description of your intentions for it. And if you want, you can even link a youtube video.</p>
+
+                <p>A forwarder can be made public for all to see, but also kept private so only those with knowledge of its existence can access it.</p>
+
+                <p>Once the enchantment is complete and has been activated, the enchanted address will behave as follows:
+                Every 10 minutes it will check if there are any unspent transaction outputs with at least 3 confirmations and a value higher than the specified minimum amount. If such a transaction output is found, its primeInputAddress is looked up to identify the sender of that transaction.</p>
+
+                <p>The “Linked Address List (LAL)” based on the parameters of the enchantment is looked up and then the amount is forwarded to the corresponding linked address.</p>
+
+                <p>There are a number of optional behaviours you can configure, such as charging a percentage based fee on each forwarding, or sending a fixed amount of bitcoin back to the sender as a sign of confirmation.</p>
+            </div>
+            {% endif %}
+        {% for forwarder in forwarders %}
+            <BR>
+
+            <div class="Forwarder {% if forwarderID == 0 %}clickableDiv{% endif %}" {% if forwarderID == 0 %}onclick="goToForwarder('{{forwarder.key.id()}}');"{% endif %}>
+
+                <div class="ForwarderName">
+                    <h1>{{forwarder.name}} </h1>
+                </div>
+
+
+                {% if beneficiaryAddress != '' %}
+                <div id="BeneficiaryAddress">
+                    Bitcoins from {{beneficiaryAddress}} are forwarded to {{linkedAddress}}, which has a balance of {{beneficiaryBalance}} Satoshis and represents a share of {{beneficiaryShare}}%.
+                </div>
+                {% endif %}
+
+
+
+                {% if forwardingAddress != '' %}
+                <div id="forwardingAddress">
+                    Bitcoins from {{forwardingAddressBeneficiary}} are forwarded to {{forwardingAddress}}, which has a balance of {{forwardingAddressBalance}} Satoshis and represents a share of {{forwardingBeneficiaryShare}}%.
+                </div>
+                {% endif %}
+
+
+                {% if showWarning == True %}
+                <div id="InvalidAddressWarning">
+                    Warning: This address is not associated with this forwarder in any way, please do not send bitcoin to this address!
+                </div>
+                {% endif %}
+
+
+
+                <div class="ForwarderDescription" style="white-space: pre-wrap;">
+{{forwarder.description}}
+                </div>
+
+                <div class="ForwarderMinimum">
+                    <p>Minumum amount: {{forwarder.minimumAmount / 100000000}} BTC</p>
+                </div>
+
+
+                {% if forwarder.youtube != '' %}
+                <div class="ForwarderYoutube">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{forwarder.youtube}}" frameborder="0" allowfullscreen></iframe>
+                </div>
+                {% endif %}
+
+
+                <div class="ForwarderAddress">
+                    <img class="QRcode center"" src="http://www.btcfrog.com/qr/bitcoinPNG.php?address={{forwarder.address}}&error=H">
+                    <p>{{forwarder.address}}</p>
+                </div>
+
+                <div class="ForwarderXPUB">
+                    <h6>{{forwarder.xpub}}</h6>
+                </div>
+
+
+                {% if forwarderID != 0 %}
+                <div class="button center forwarderButton" onclick="goToBlocklinker('{{forwarder.address}}', '{{forwarder.xpub}}');">View linkings</div>
+                <br>
+                {% endif %}
+
+
+                <div class="ForwarderCreation">
+                    Created by {{forwarder.creator}} on {{forwarder.date.strftime("%Y-%m-%d %H:%M")}}
+                </div>
+
+
+                {% if socialButtons == True%}
+                <div ID="share" style="display:block;">
+                    <span class='st_facebook_large' displayText='Facebook'></span>
+                    <span class='st_twitter_large' displayText='Tweet'></span>
+                    <span class='st_googleplus_large' displayText='Google +'></span>
+                    <span class='st_reddit_large' displayText='Reddit'></span>
+                    <span class='st_linkedin_large' displayText='LinkedIn'></span>
+                    <span class='st_stumbleupon_large' displayText='StumbleUpon'></span>
+                    <span class='st_tumblr_large' displayText='Tumblr'></span>
+                    <span class='st_digg_large' displayText='Digg'></span>
+                    <span class='st_delicious_large' displayText='Delicious'></span>
+                </div>
+                {% endif %}
+
+            </div>
+            <BR>
+
+        {% endfor %}
+        <BR>
+
+
+
+
+
+
+
+
+
+
+
+          
+        {{ googleAnalyticsHTML|safe }}
+
+
+        
+        
+
+            
+        <div class="push"></div>
+    </div>
+    {{ footerHTML|safe }}   
+
+<script language="javascript" type="text/javascript">
+    function goToBlocklinker(address, xpub){
+        window.open(
+          "http://blocklinker.appspot.com/LinkedList?address=" + address + "&xpub=" + xpub + "&metric=LBL",
+          "_blank"
+        );
+    }
+
+    function goToForwarder(forwarderID){
+        window.open(
+          "/forwarder?forwarderID=" + forwarderID,
+          "_parent"
+        );
+    }
+</script>
+    
+
+ 
+</body>
+</html>
+
+
+{% endautoescape %}

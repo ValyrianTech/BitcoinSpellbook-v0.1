@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+{% autoescape true %}
+
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+</head>
+<body>
+    {{ navigationHTML|safe }}
+
+    <div id="wrapper">
+        <div id="documentation-wrapper">
+            <div class="documentation-title">API documentation</div>
+            <div class="documentation-section" id="SIL">
+                <div class="documentation-header">Simplified Inputs List (SIL)</div>
+
+                <div class="documentation-description">
+
+                    <p>Returns an ordered list of address-value pairs.</p>
+                    <p>The addresses are the PrimeInputAddresses of all transactions sent to this address, ordered first by blockheight, then transactionhash.
+                    The value is the total amount of Satoshis sent by that PrimeInputAddress at the moment of the specified blockheight.</p>
+
+                </div>
+
+
+
+                <div class="documentation-arguments">
+                    Arguments:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Required</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>format</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>Format of the results, should be “json”</td>
+                        </tr>
+
+                        <tr>
+                            <td>address</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>A bitcoin address</td>
+                        </tr>
+
+                        <tr>
+                            <td>block</td>
+                            <td>no</td>
+                            <td>integer</td>
+                            <td>A block height, if omitted the latest  blockheight is used.</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="documentation-example-input">
+                    Example: <a href="SIL?format=json&address=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A&block=376000">SIL?format=json&address=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A&block=376000</a>
+                </div>
+
+                <div class="documentation-return-values">
+                    Return values:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>success</td>
+                            <td>integer</td>
+                            <td>1 = success, 0 = fail</td>
+                        </tr>
+
+                        <tr>
+                            <td>SIL</td>
+                            <td>array</td>
+                            <td>ordered list of address-value pairs</td>
+                        </tr>
+
+                        <tr>
+                            <td>error</td>
+                            <td>string</td>
+                            <td>error message in case something went wrong</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="documentation-return-example">
+                Return example:
+                <span><pre>
+{
+    "success": 1,
+    "SIL":  [[u'1Robbk6PuJst6ot6ay2DcVugv8nxfJh5y', 100000],
+             [u'1SansacmMr38bdzGkzruDVajEsZuiZHx9', 100000],
+             [u'1AryaZJnXcMxJua4CpKaNUNRxbu7tmZSf1', 150000],
+             [u'1Branzwx1RceFrHsjSQK1sHzyeRB7BMoWT', 300000],
+             [u'1Jon1mTMWTwv4bYZy8ZaCHEvjGGXUmMD1X', 60000],
+             [u'1Jon2kyK579Wh1rvPzQvrQkJ64xzAFb2fn', 280000]]
+}
+                </pre></span>
+                </div>
+
+                {{ googleAnalyticsHTML|safe }}
+            </div>
+        </div>
+    </div>
+
+    {{ footerHTML|safe }}
+</body>
+</html>
+{% endautoescape %}

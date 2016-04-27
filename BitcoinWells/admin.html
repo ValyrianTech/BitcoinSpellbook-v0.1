@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+
+</head>
+
+<body>
+    {{ navigationHTML|safe }}
+    <div ID="wrapper">
+        <div class="navigationTrail">
+            <a href="/admin?" >Admin home</a>
+        </div>
+
+        <div id="FilterDiv">
+                <div class="field-wrap">
+                    <label>Filter wells</label>
+                    <select id="Filter" onchange="applyFilter();" style="width: 7em;">
+                        <option value="All" {% if status == 'All' %}selected{% endif %}>All</option>
+                        <option value="Pending" {% if status == 'Pending' %}selected{% endif %}>Pending</option>
+                        <option value="Active" {% if status == 'Active' %}selected{% endif %}>Active</option>
+                        <option value="Disabled" {% if status == 'Disabled' %}selected{% endif %}>Disabled</option>
+                    </select>
+                </div>
+        </div>
+
+
+        <div ID="wellsTable">
+
+            <table class="flatTable">
+            <tr>
+                <th class="cell">Order</th>
+                <th class="cell">Name</th>
+                <th class="cell">Creator</th>
+                <th class="cell">Visibility</th>
+                <th class="cell">Status</th>
+                <th class="cell">Created</th>
+                <th class="cell">Delete</th>
+            </tr>
+
+            {% for well in wells%}
+                <tr>
+                    <td class="cell">{{ well.sortOrder }}</td>
+                    <td class="cell"><a href="well?wellID={{well.key.id()}}">{{ well.name}}</a></td>
+                    <td class="cell">{{ well.creator }}</td>
+                    <td class="cell">{{ well.visibility }}</td>
+                    <td class="cell">{{ well.status }}</td>
+                    <td class="cell">{{ well.creationDate.strftime('%d/%m/%Y %H:%M') }}</td>
+                    <td class="cell"><a href="confirm?wellID={{well.key.id()}}"><img class="deleteIcon" src="stylesheets/images/deleteIcon.png" alt="Delete"></a></td>
+
+
+                </tr>
+            {% endfor %}
+
+            </table>
+
+            <a class="buttonDiv" href="/well" >
+                <div id="createWellButton" class="button center createWellButton">New well</div>
+            </a>
+
+
+
+
+        <div style="clear: both;"></div>
+
+
+    </div>
+
+        <div class="navigationTrail">
+            <a href="/admin?" >Admin home</a>
+        </div>
+
+        {{ googleAnalyticsHTML|safe }}
+        <div class="push"></div>
+    </div>
+
+  {{ footerHTML|safe }}
+
+    <script language="javascript" type="text/javascript">
+        function applyFilter(){
+
+            var status = document.getElementById('Filter').value;
+            window.open(
+              "/admin?status=" + status,
+              "_parent"
+
+            );
+        }
+    </script>
+
+  </body>
+</html>
+{% endautoescape %}

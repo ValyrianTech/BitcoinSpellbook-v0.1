@@ -1,0 +1,36 @@
+application: proportionalrandom
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /robots\.txt
+  static_files: robots.txt
+  upload: robots\.txt
+
+- url: /stylesheets
+  static_dir: stylesheets
+
+
+- url: /
+  script: ProportionalRandom.app
+
+
+- url: /documentation
+  script: ProportionalRandom.app
+
+- url: /ProportionalRandom
+  script: ProportionalRandom.app
+
+libraries:
+- name: webapp2
+  version: "2.5.2"
+- name: jinja2
+  version: latest
+- name: pycrypto
+  version: "2.6"

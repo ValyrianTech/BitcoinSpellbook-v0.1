@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+
+
+
+</head>
+<body onload="fillValues()">
+<script language="javascript" type='text/javascript'>
+    function fillValues(){
+        var AddressField = document.getElementById('Address');
+        AddressField.value = '{{address}}';
+
+        var TxidField = document.getElementById('Txid');
+        TxidField.value = '{{txid}}';
+
+        var AddressesField = document.getElementById('Addresses');
+        AddressesField.value = '{{addresses}}';
+
+        showOptimalInputs();
+    }
+
+    function reloadPage(){
+        var request = document.getElementById('request').value;
+        var address = document.getElementById('Address').value;
+        var txid = document.getElementById('Txid').value;
+        var addresses = document.getElementById('Addresses').value;
+        var blockheight = document.getElementById('Blockheight').value;
+
+        addresses = addresses.replace(/(\r\n|\n|\r)/gm, "|");
+
+        var url = request + "?format=json&"
+
+        if (request == 'transactions' && address != ''){
+            url += "&address=" + address;
+        }
+
+        if (request == 'primeInputAddress' && txid != ''){
+            url += "&txid=" + txid;
+        }
+
+        if ((request == 'balances' || request == 'utxos' ) && addresses != ''){
+            url += "&addresses=" + addresses;
+        }
+
+        if (request == 'block' && blockheight > 0){
+            url += "&block=" + blockheight;
+        }
+
+        window.location = url;
+    }
+
+    function showOptimalInputs(){
+
+        document.getElementById('AddressDiv').style.display = 'none';
+        document.getElementById('TxidDiv').style.display = 'none';
+        document.getElementById('AddressesDiv').style.display = 'none';
+        document.getElementById('BlockheightDiv').style.display = 'none';
+
+        var request = document.getElementById('request').value;
+        if (request == 'transactions'){
+            document.getElementById('AddressDiv').style.display = 'block';
+            document.getElementById('TxidDiv').style.display = 'none';
+            document.getElementById('AddressesDiv').style.display = 'none';
+            document.getElementById('BlockheightDiv').style.display = 'none';
+        }
+        else if (request == 'primeInputAddress'){
+            document.getElementById('AddressDiv').style.display = 'none';
+            document.getElementById('TxidDiv').style.display = 'block';
+            document.getElementById('AddressesDiv').style.display = 'none';
+            document.getElementById('BlockheightDiv').style.display = 'none';
+        }
+        else if (request == 'utxos' || request == 'balances'){
+            document.getElementById('AddressDiv').style.display = 'none';
+            document.getElementById('TxidDiv').style.display = 'none';
+            document.getElementById('AddressesDiv').style.display = 'block';
+            document.getElementById('BlockheightDiv').style.display = 'none';
+        }
+        else if (request == 'block'){
+            document.getElementById('AddressDiv').style.display = 'none';
+            document.getElementById('TxidDiv').style.display = 'none';
+            document.getElementById('AddressesDiv').style.display = 'none';
+            document.getElementById('BlockheightDiv').style.display = 'block';
+        }
+        else if (request == 'latestBlock'){
+            document.getElementById('AddressDiv').style.display = 'none';
+            document.getElementById('TxidDiv').style.display = 'none';
+            document.getElementById('AddressesDiv').style.display = 'none';
+            document.getElementById('BlockheightDiv').style.display = 'none';
+        }
+
+    }
+
+
+</script>
+
+    {{ navigationHTML|safe }}
+
+    <div id="wrapper">
+            <br><br>
+
+            <div class="SpellTitle">Chapter 1: Blockchaindata</div>
+
+            <div class="SpellDescription">
+                <p>The first thing you need to learn is to summon a portal to the Blockchain (deploy your own app to the Google App Engine Platform).
+                    Each of the spells and enchantments in this book require a similar ritual
+                    that needs to be performed once.</p>
+
+                <p>Apprentices are welcome to use my portal while they are learning these spells, however I would
+                    recommend to conjure up your own portal as soon as possible. This will allow you to customize the
+                    connections your portal makes to the Blockchain and have full control of the information that
+                    flows through it. Note that whoever controls the portal, has the capability to alter the information
+                    it provides, so having your own private portal is a must for any serious wizard.</p>
+
+                <p>Once you have access to a portal you can invoke requests from it. The following requests will allow
+                    you to extract information from the blockchain and mold it into a format that can be used in
+                    combination with other spells in this book.</p>
+
+                <ul>
+                    <li><b><a href="/documentation#transactions">transactions</a></b> will allow you to see the complete history of a Bitcoin address</li>
+                    <li><b><a href="/documentation#primeInputAddress">primeInputAddress</a></b> will identify a Bitcoin address in case a transaction has multiple inputs</li>
+                    <li><b><a href="/documentation#utxos">utxos</a></b> shows you the available outputs for a list of Bitcoin addresses</li>
+                    <li><b><a href="/documentation#balances">balances</a></b> will calculate the current balance, total received and total sent for a list of Bitcoin addresses</li>
+                    <li><b><a href="/documentation#block">block</a></b> and <b><a href="/documentation#latestBlock">latestBlock</a></b> will reveal knowledge about a block at a specific blockheight or the most recent block</li>
+                </ul>
+
+
+                <p>At the moment of this writing portals created with this spell support connections to the following
+                    providers: Blocktrail.com, Blockchain.info and blockexplorers running on Insight.</p>
+
+            </div>
+
+            <div id="Inputs" class="form">
+                <form action="/" method="post">
+
+                        <div class="field-wrap">
+                            <label>Request</label>
+                            <select id="request" onchange="showOptimalInputs();" title="Request">
+                              <option value="transactions" {% if request == 'transactions' %}selected{% endif %}>Transactions</option>
+                              <option value="primeInputAddress" {% if request == 'transactions' %}selected{% endif %}>Prime Input Address</option>
+                              <option value="balances" {% if request == 'balances' %}selected{% endif %}>Balances</option>
+                              <option value="utxos" {% if request == 'utxos' %}selected{% endif %}>Unspent transaction outputs</option>
+                              <option value="block" {% if request == 'block' %}selected{% endif %}>Block</option>
+                              <option value="latestBlock" {% if request == 'latestBlock' %}selected{% endif %}>Latest block</option>
+                            </select>
+                        </div>
+
+                        <div id="AddressDiv" class="field-wrap">
+                            <label>Bitcoin Address</label>
+                            <input id="Address" type="text" autocomplete="off">
+                        </div>
+
+                        <div id="TxidDiv" class="field-wrap">
+                            <label>Transaction ID</label>
+                            <input id="Txid" type="text" autocomplete="off">
+                        </div>
+
+                        <div id="AddressesDiv" class="field-wrap">
+                            <label>Enter all Bitcoin addresses, 1 per line</label>
+                            <textarea id="Addresses" type="text" autocomplete="off" rows="5"></textarea>
+                        </div>
+
+                        <div id="BlockheightDiv" class="field-wrap">
+                            <label>Block height</label>
+                            <input id="Blockheight" type="number" value="{{block}}" style="width: 7em"/>
+                        </div>
+
+                    <div class="button center" onclick="reloadPage()">Get data</div>
+
+                </form>
+
+            </div>
+
+
+
+
+        {{ googleAnalyticsHTML|safe }}
+    </div>
+    {{ footerHTML|safe }}
+
+
+
+
+</body>
+</html>
+{% endautoescape %}

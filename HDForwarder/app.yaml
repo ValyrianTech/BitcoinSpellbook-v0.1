@@ -1,0 +1,75 @@
+application: hdforwarder
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /robots\.txt
+  static_files: robots.txt
+  upload: robots\.txt
+
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /stylesheets
+  static_dir: stylesheets
+
+- url: /admin
+  script: hdforwarder.application
+  login: admin
+
+- url: /editForwarder
+  script: hdforwarder.application
+  login: admin
+
+- url: /saveForwarder
+  script: hdforwarder.application
+  login: admin
+
+- url: /confirm
+  script: hdforwarder.application
+  login: admin
+
+- url: /deleteForwarder
+  script: hdforwarder.application
+  login: admin
+
+
+- url: /getAddress
+  script: hdforwarder.application
+  login: admin
+
+- url: /doForwarding
+  script: hdforwarder.application
+  login: admin
+
+
+- url: /
+  script: hdforwarder.application
+
+- url: /forwarder
+  script: hdforwarder.application
+
+- url: /documentation
+  script: hdforwarder.application
+
+- url: /updateForwarder
+  script: hdforwarder.application
+
+
+inbound_services:
+- warmup
+
+libraries:
+- name: webapp2
+  version: latest
+- name: jinja2
+  version: latest
+- name: pycrypto
+  version: "2.6"
+
+builtins:
+- remote_api: on
+

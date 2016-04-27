@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+    {% if socialButtons == True%}
+        <script type="text/javascript">var switchTo5x=true;</script>
+        <script type="text/javascript" src="http://w.sharethis.com/button/buttons.js"></script>
+        <script type="text/javascript">stLight.options({publisher: "2dd80519-ff1c-4cf4-bd97-c80da5017ca8", doNotHash: true, doNotCopy: true, hashAddressBar: false});</script>
+    {% endif %}
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+
+        // Create the data table.
+        var data1 = google.visualization.arrayToDataTable([
+          ['Campaign' {% for i in range(0, nCampaigns) %}, '{{ campaigns[i].name}}', { role: 'style' } {% endfor %} ],
+          ['Campaign' {% for i in range(0, nCampaigns) %}, {{ campaigns[i].target / 100000000}}, 'stroke-color: #666666; stroke-opacity: 1; stroke-width: 8; fill-color: #CCCCCC; fill-opacity: 1' {% endfor %}]]);
+
+
+        // Set chart options
+        var options1 = {'width': 190,
+                       'height': 1000,
+                       'isStacked': true,
+                       'chartArea':{left: 140, width: 90, height:"100%"},
+                       'backgroundColor': 'transparent',
+                       'legend': { position: "none" },
+                       'tooltip': {isHtml: true},
+                       'bar': {groupWidth: "100%"},
+
+
+                       'vAxis': {
+                            textStyle: {
+                                    color: "white",
+                                    fontSize: 24,
+                                    fontName: "Arial",
+                                    bold: true,
+
+                                },
+                            ticks: {{milestoneTicks}},
+                            viewWindowMode:'explicit',
+                                          viewWindow:{max:{{maxChartValue/100000000}}, min:0}
+                            }
+
+                       };
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart1 = new google.visualization.ColumnChart(document.getElementById('leftcampaignsChart'));
+        chart1.draw(data1, options1);
+
+        options1.width = 50;
+        options1.chartArea.left = 0;
+        options1.chartArea.right = 100;
+
+        var chart3 = new google.visualization.ColumnChart(document.getElementById('rightcampaignsChart'));
+        chart3.draw(data1, options1);
+
+        // Create the data table.
+        var data2 = google.visualization.arrayToDataTable([
+          ['Address' {% for i in range(0, nDonations) %}, '{{ donations[i][0]}}', { role: 'style' } {% endfor %}, 'Needed', { role: 'style' } ],
+          ['Donation' {% for i in range(0, nDonations) %}, {{ donations[i][1] / 100000000}}, 'stroke-color: #4169E1; stroke-opacity: 0.9; stroke-width: 4; fill-color: #3399ff; fill-opacity: 0.75' {% endfor %}, {{needed}} / 100000000, 'stroke-color: #eeeeee; stroke-opacity: 0.5; stroke-width: 4; fill-color: #ffffff; fill-opacity: 0.3']]);
+
+
+        // Set chart options
+        var options2 = {'width': 120,
+                       'height': 1000,
+                       'isStacked': true,
+                       'chartArea':{width:"100%",height:"100%"},
+                       'backgroundColor': 'transparent',
+                       'legend': { position: "none" },
+                       'tooltip': {isHtml: true},
+                       'bar': {groupWidth: "100%"},
+                       'colors': {{donationColors|safe}},
+                       'vAxis': {
+                            viewWindowMode:'explicit',
+                                          viewWindow:{max:{{maxChartValue/100000000}}, min:0}
+                            }
+
+                       };
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart2 = new google.visualization.ColumnChart(document.getElementById('donationsChart'));
+        chart2.draw(data2, options2);
+
+
+      }
+    </script>
+
+</head>
+
+<body>
+
+    {{ navigationHTML|safe }}
+    <div ID="wrapper">
+
+            <br><br>
+            {% if wellID == 0 %}
+            <div class="SpellTitle">Chapter 8: Bitcoin Wells</div>
+
+            <div class="SpellDescription">
+                <p>This is in fact a very simple enchantment, all it really does is check if a certain amount of bitcoin has been received and if that is the case, reveal some information or send an email.</p>
+
+                <p>But even in its simplicity it can be very powerful, for example it can used to gather the necessary resources for a project via a crowdfunding. There are many more ways to use it, you are only limited by your own imagination.</p>
+
+                <p>I decided to use a well as a metaphor for this enchantment because the analogy works in 2 ways: A well is something that provides resources to whoever created it and people often throw money into a wishing well to have a wish granted.</p>
+
+                <p>A Bitcoin well can have multiple sequential campaigns and each campaign can have multiple milestones. When milestones are achieved, a secret can be revealed automatically such as a password or a link to a file, another option is to send a one-time email.</p>
+
+
+            </div>
+            {% endif %}
+
+        {% for well in wells %}
+            <BR>
+
+                <div class="Well {% if wellID == 0 %}clickableDiv{% endif %}" {% if wellID == 0 %}onclick="goToWell('{{well.key.id()}}');"{% endif %}>
+
+                        <div class="WellName">
+                            {{well.name}}
+                        </div>
+
+                        <div class="WellDescription" style="white-space: pre-wrap;">
+{{well.description}}
+                        </div>
+
+                        {% if well.youtube != '' %}
+                        <div class="WellYoutube">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/{{well.youtube}}" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        {% endif %}
+
+                        {% if wellID == 0 %}
+                            <div class="WellRaised">Total raised: {{balances[well.address]['received']/100000000}} BTC</div>
+                        {% endif %}
+
+
+                    {% if wellID != 0 %}
+                        <div class="WellRaised">Total raised: {{balances[well.address]['received']/100000000}} BTC</div>
+                        <div class="WellContainerDiv">
+
+
+
+                            <div class="CampaignsDiv">
+                            {% for campaign in campaigns %}
+                                {% if campaign.name != 'Total raised' %}
+                                <div class="CampaignDiv">
+                                    <div class="CampaignNameDiv">
+                                        {{ campaign.name}}
+                                    </div>
+                                    <div class="CampaignTargetDiv">
+                                            Target: {{ campaign.target/100000000}} BTC
+                                            {% if (((balances[well.address]['received'] - campaign.startAmount)/campaign.target) * 100) > 0 %}
+                                                ({% if (((balances[well.address]['received'] - campaign.startAmount)/campaign.target) * 100) < 100 %} {{((balances[well.address]['received'] - campaign.startAmount)/campaign.target) * 100}}% {% else %} COMPLETE  {% endif %})
+                                            {% endif %}
+                                    </div>
+                                    <div class="CampaignDescriptionDiv">
+                                        {{ campaign.description}}
+                                    </div>
+
+                                    {% if campaign.youtube != '' %}
+                                    <div class="CampaignYoutube">
+                                        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{campaign.youtube}}" frameborder="0" allowfullscreen></iframe>
+                                    </div>
+                                    {% endif %}
+
+
+                                    {% for milestone in campaign.milestones %}
+                                        {% if milestone.action != 'SendMail' %}
+                                            <div class="MilestoneDiv">
+                                                <div class="MilestoneAmountDiv">
+                                                    @ {{(((milestone.percent * campaign.target)/100) + campaign.startAmount)/100000000}} BTC
+                                                </div>
+
+                                                <div class="MilestoneNameDiv">
+                                                    {{milestone.name}}
+                                                </div>
+
+                                                <div class="clearboth"></div>
+                                                <div class="MilestoneDescriptionDiv">
+                                                    {{ milestone.description}}
+                                                </div>
+                                                <div class="clearboth"></div>
+                                                {% if (balances[well.address]['received'] - campaign.startAmount) >= (milestone.percent * campaign.target)/100 %}
+                                                    {% if milestone.action == 'RevealText' %}
+                                                        <div class="MilestoneActionDiv">{{milestone.revealText}}</div>
+                                                    {% elif milestone.action == 'RevealLink' %}
+                                                        <div class="MilestoneActionDiv"><a href="{{milestone.revealLinkURL}}">{{milestone.revealLinkText}}</a></div>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}
+
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+
+                            </div>
+
+                            <div class="WellImageDiv">
+
+                                <div class="WellDiv">
+                                    <div class="BitcoinLogoDiv"></div>
+                                    <a href="http://www.valyrian.tech"><div class="ValyrianTechLogoDiv" ></div></a>
+                                    <img class="WellQRcodeDiv center" src="http://www.btcfrog.com/qr/bitcoinPNG.php?address={{well.address}}&error=H">
+                                    <div class="WellAddressDiv center"><span>{{well.address}}</span></div>
+                                </div>
+
+
+
+                                <div id="UndergroundDiv">
+                                    <div id="ChartsDiv">
+                                        <div id="leftcampaignsChart"></div>
+                                        <div id="donationsChart"></div>
+                                        <div id="rightcampaignsChart"></div>
+                                    </div>
+                                    <div class="clearboth"></div>
+                                </div>
+
+
+                            </div>
+                            <div class="clearboth"></div>
+                        </div>
+
+                    {% endif %}
+                        <div class="WellCreation">
+                            Created by {{well.creator}} on {{well.creationDate.strftime("%Y-%m-%d %H:%M")}}
+                        </div>
+
+
+                        {% if socialButtons == True%}
+                        <div ID="share" style="display:block;">
+                            <span class='st_facebook_large' displayText='Facebook'></span>
+                            <span class='st_twitter_large' displayText='Tweet'></span>
+                            <span class='st_googleplus_large' displayText='Google +'></span>
+                            <span class='st_reddit_large' displayText='Reddit'></span>
+                            <span class='st_linkedin_large' displayText='LinkedIn'></span>
+                            <span class='st_stumbleupon_large' displayText='StumbleUpon'></span>
+                            <span class='st_tumblr_large' displayText='Tumblr'></span>
+                            <span class='st_digg_large' displayText='Digg'></span>
+                            <span class='st_delicious_large' displayText='Delicious'></span>
+                        </div>
+
+                        {% endif %}
+
+                </div>
+
+            <BR>
+
+        {% endfor %}
+
+
+
+
+
+
+
+
+
+
+
+          
+        {{ googleAnalyticsHTML|safe }}
+
+
+        
+        
+
+            
+        <div class="push"></div>
+    </div>
+    {{ footerHTML|safe }}   
+
+<script language="javascript" type="text/javascript">
+    function goToWell(wellID){
+        window.open(
+          "/?wellID=" + wellID,
+          "_parent"
+        );
+    }
+</script>
+    
+
+ 
+</body>
+</html>
+
+
+{% endautoescape %}

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+<script language="javascript" type='text/javascript'>
+    function showOptimalInputs(){
+        var milestoneAction = document.getElementById('MilestoneAction').value;
+
+        if (milestoneAction == 'None'){
+            document.getElementById('RevealTextDiv').style.display = 'none';
+            document.getElementById('RevealLinkDiv').style.display = 'none';
+            document.getElementById('SendMailDiv').style.display = 'none';
+        }
+        else if (milestoneAction == 'RevealText'){
+            document.getElementById('RevealTextDiv').style.display = 'block';
+            document.getElementById('RevealLinkDiv').style.display = 'none';
+            document.getElementById('SendMailDiv').style.display = 'none';
+        }
+
+        else if (milestoneAction == 'RevealLink'){
+            document.getElementById('RevealTextDiv').style.display = 'none';
+            document.getElementById('RevealLinkDiv').style.display = 'block';
+            document.getElementById('SendMailDiv').style.display = 'none';
+        }
+        else if (milestoneAction == 'SendMail'){
+            document.getElementById('RevealTextDiv').style.display = 'none';
+            document.getElementById('RevealLinkDiv').style.display = 'none';
+            document.getElementById('SendMailDiv').style.display = 'block';
+        }
+
+
+
+    }
+
+
+</script>
+
+
+</head>
+
+<body onload="showOptimalInputs();">
+    {{ navigationHTML|safe }}
+    <div ID="wrapper"> 
+
+        <div class="navigationTrail">
+            <a href="/admin?" >Admin home</a>
+            {% if wellID != 0 %}
+            > <a href="/well?wellID={{wellID}}" >{{well.name}}</a>
+            {% endif %}
+            {% if campaignID != 0 %}
+            > <a href="/campaign?wellID={{wellID}}&campaignID={{campaignID}}" >{{campaign.name}}</a>
+            {% endif %}
+            {% if milestoneID != 0 %}
+            > <a href="/milestone?wellID={{wellID}}&campaignID={{campaignID}}&milestoneID={{milestoneID}}" >{{milestone.name}}</a>
+            {% endif %}
+        </div>
+
+        <div ID="createMilestone">
+
+            <form action="/saveMilestone?" method="post" class="form">
+                <h1>Milestone</h1>
+                <div>
+                    <input name="WellID" type="hidden" value="{{wellID}}">
+                    <input name="CampaignID" type="hidden" value="{{campaignID}}">
+                    <input name="MilestoneID" type="hidden" value="{{milestoneID}}">
+                    <div class="field-wrap">
+                        Name<input name="MilestoneName" type="text" size="100" required autocomplete="off" value="{{milestone.name}}">
+                    </div>
+
+                    <div class="field-wrap">
+                        Description<textarea rows="20" cols="100" name="MilestoneDescription"  required autocomplete="off" >{{milestone.description}}</textarea>
+                    </div>
+
+                    <div class="field-wrap">
+                        Percent<input name="MilestonePercent" type="number" step="0.01" style="width: 7em;" value="{{milestone.percent}}" required>
+                    </div>
+
+                    <div class="field-wrap">
+                        Action
+                        <select id="MilestoneAction" name="MilestoneAction" style="width: 7em" onchange="showOptimalInputs();">
+                          <option value="None" {% if milestone.action == 'None' %}selected{% endif %}>None</option>
+                          <option value="RevealText" {% if milestone.action == 'RevealText' %}selected{% endif %}>Reveal Text</option>
+                          <option value="RevealLink" {% if milestone.action == 'RevealLink' %}selected{% endif %}>Reveal Link</option>
+                          <option value="SendMail" {% if milestone.action == 'SendMail' %}selected{% endif %}>Send mail</option>
+                        </select>
+                    </div>
+
+                    <div id="RevealTextDiv">
+                        <div class="field-wrap">
+                            Reveal Text<textarea rows="20" cols="100" name="RevealText"  autocomplete="off" >{{milestone.revealText}}</textarea>
+                        </div>
+                    </div>
+
+                    <div id="RevealLinkDiv">
+                        <div class="field-wrap">
+                            Reveal Link Text<input name="RevealLinkText" type="text" size="100" autocomplete="off" value="{{milestone.revealLinkText}}">
+                        </div>
+
+                        <div class="field-wrap">
+                            Reveal Link URL<input name="RevealLinkURL" type="text" size="100" autocomplete="off" value="{{milestone.revealLinkURL}}">
+                        </div>
+                    </div>
+
+                    <div id="SendMailDiv">
+
+                        <div class="field-wrap">
+                            Mail to<input name="MailTo" type="email" size="100" autocomplete="off" value="{{milestone.mailTo}}">
+                        </div>
+                        <div class="field-wrap">
+                            Subject<input name="MailSubject" type="text" size="100" autocomplete="off" value="{{milestone.mailSubject}}">
+                        </div>
+                        <div class="field-wrap">
+                            Body<textarea rows="20" cols="100" name="MailBody"  autocomplete="off" >{{milestone.mailBody}}</textarea>
+                        </div>
+
+                        Milestones of type "SendMail" will not be visible to the public.
+                    </div>
+                </div>
+
+                <input class="button center" type="submit" name="SaveButton" value="Save" >
+
+            </form>
+
+        </div>
+
+        <div class="navigationTrail">
+            <a href="/admin?" >Admin home</a>
+            {% if wellID != 0 %}
+            > <a href="/well?wellID={{wellID}}" >{{well.name}}</a>
+            {% endif %}
+            {% if campaignID != 0 %}
+            > <a href="/campaign?wellID={{wellID}}&campaignID={{campaignID}}" >{{campaign.name}}</a>
+            {% endif %}
+            {% if milestoneID != 0 %}
+            > <a href="/milestone?wellID={{wellID}}&campaignID={{campaignID}}&milestoneID={{milestoneID}}" >{{milestone.name}}</a>
+            {% endif %}
+        </div>
+
+        {{ googleAnalyticsHTML|safe }}
+        <div class="push"></div>
+    </div> 
+            
+    {{ footerHTML|safe }}
+  
+
+
+ 
+</body>
+</html>
+
+
+{% endautoescape %}

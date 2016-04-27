@@ -1,0 +1,174 @@
+
+
+
+
+#OptionalInputs {
+    margin-top 30px;
+    border: 1px solid black;
+    padding: 30px;
+    width: 500px;
+    margin: auto;
+}
+
+.resultsLink {
+    text-align: center;
+}
+
+#results {
+    width: 75%;
+    margin: auto;
+}
+
+#resultsTable {
+    width: 300px;
+    margin: auto;
+}
+
+/*********************************************************************************/
+/* Proposal                                                                      */
+/*********************************************************************************/
+
+#proposal-header {
+    text-align: center;
+    margin: auto;
+    font-weight: bold;
+    font-size: 70px;
+}
+
+
+#proposal-Card {
+    width: 50%;
+    word-break: normal;
+    text-align: center;
+    margin: auto;
+
+}
+
+#proposal-Name {
+    font-weight: bold;
+    font-size: 70px;
+}
+
+
+#proposal-Address {
+    font-size: 12px;
+}
+
+#proposal-VoteCost {
+    font-size: 12px;
+}
+
+#proposal-SignificantDigits{
+    font-size: 12px;
+}
+
+#proposal-ProposalHash{
+    font-size: 12px;
+}
+
+#proposal-Info{
+    margin-top: 30px;
+    padding: 30px;
+    border: 1px solid black;
+    font-size: 12px;
+}
+
+#proposal-OptionalInfo{
+    margin-top: 30px;
+    padding: 30px;
+    border: 1px solid black;
+    font-size: 12px;
+}
+
+.proposal-Label{
+    font-size: 16px;
+    font-weight: bold;
+}
+
+
+#proposal-Weights {
+    font-size: 12px;
+}
+
+#proposal-RegAddress {
+    font-size: 12px;
+}
+
+#proposal-RegXPUB {
+    width: 80%;
+    text-align: center;
+    margin: auto;
+    word-break: break-all;
+    font-size: 12px;
+}
+
+#proposal-RegBlock {
+    font-size: 12px;
+}
+
+
+/*********************************************************************************/
+/* Options                                                                       */
+/*********************************************************************************/
+
+
+
+#optionCards {
+
+
+}
+
+.optionCard {
+    width: 1000px;
+    height: 250px;
+
+    border: 10px solid black;
+    border-style: ridge;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.optionID {
+    width: 250px;
+    height: 250px;
+    line-height: 250px;
+    text-align: center;
+    float: left;
+    font-size: 100px;
+    font-weight: bold;
+
+    background: #e6d2a6;
+
+}
+.optionResult {
+    width: 500px;
+    height: 250px;
+    line-height: 250px;
+    float: left;
+    text-align: center;
+    font-size: 50px;
+}
+
+.optionQR {
+    width: 250px;
+    height: 250px;
+    float: left;
+}
+
+#QR {
+    margin-top: 10px;
+    width: 230px;
+    height: 230px;
+}
+
+img.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.resultValue {
+    text-align: right;
+    padding: 10px;
+}

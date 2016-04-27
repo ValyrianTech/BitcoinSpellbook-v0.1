@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+
+
+</head>
+
+<body>
+    {{ navigationHTML|safe }}
+    <div ID="wrapper">
+
+        <div id="confirmDeleteDiv">
+            <form action="/saveCampaign" method="post" class="form">
+
+                {% if milestoneID != 0 %}
+                    <h1>Are you sure you want to delete {{milestone.name}}?</h1>
+                    <div class="confirmButtons">
+                        <button class="button center cancelButton" onclick="window.location='/admin';return false;">Cancel</button>
+                        <button class="button center confirmButton" onclick="window.location='/deleteMilestone?wellID={{wellID}}&campaignID={{campaignID}}&milestoneID={{milestoneID}}'">Yes</button>
+                    </div>
+
+                {% elif campaignID != 0 %}
+                    <h1>Are you sure you want to delete {{campaign.name}}?</h1>
+                    <div class="confirmButtons">
+                        <button class="button center cancelButton" onclick="window.location='/admin';return false;">Cancel</button>
+                        <button class="button center confirmButton" onclick="window.location='/deleteCampaign?wellID={{wellID}}&campaignID={{campaignID}}'">Yes</button>
+                    </div>
+
+                {% elif wellID != 0 %}
+                    <h1>Are you sure you want to delete {{well.name}}?</h1>
+                    <div class="confirmButtons">
+                        <button class="button center cancelButton" onclick="window.location='/admin';return false;">Cancel</button>
+                        <button class="button center confirmButton" onclick="window.location='/deleteWell?wellID={{wellID}}'">Yes</button>
+                    </div>
+
+                {% endif %}
+
+
+            </form>
+        </div>
+        <br>
+        <div style="clear: both;"></div>
+        {{ googleAnalyticsHTML|safe }}
+        <div class="push"></div>
+    </div>
+    {{ footerHTML|safe }}
+
+</body>
+</html>
+{% endautoescape %}

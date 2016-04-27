@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+{% autoescape true %}
+
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+</head>
+<body>
+    {{ navigationHTML|safe }}
+
+    <div id="wrapper">
+        <div id="documentation-wrapper">
+            <div class="documentation-title">Documentation</div>
+            <div class="documentation-section">
+                <div class="documentation-header">HDForwarder</div>
+
+                <div class="documentation-description">
+
+                    <p>To create a new forwarder you will need to access the <a href="/admin">admin panel</a>. This section is only available to the administrator of the app and not visible to the public.</p>
+                    <p>Click the “New forwarder” button and fill in the form. When you are done, click the “Save” button, it's that simple!</p>
+
+                </div>
+
+
+
+                <div class="documentation-arguments">
+                    Parameters:
+                    <table class="flatTable">
+                        <tr class="titleTr">
+                            <td class="titleTd" colspan="4">HD Forwarder</td>
+                        </tr>
+                        <tr>
+                            <th>Name</th>
+                            <th>Required</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>Status</td>
+                            <td>yes</td>
+                            <td>"Pending", "Active" or "Disabled"</td>
+                            <td>When a new forwarder is created, it will have the “Pending” status. Once you are ready, set this to “Active”. If you want to temporarily disable a forwarder, set this to “Disabled”.</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>AddressType</td>
+                            <td>yes</td>
+                            <td>"BIP44" or "Private key"</td>
+                            <td>Select which type of address you will use for this forwarder, an address from the built-in BIP44 HOT wallet or an address derived from a private key.</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Wallet index</td>
+                            <td>for type "BIP44"</td>
+                            <td>integer</td>
+                            <td>If you chose “BIP44” for the addressType, you can specify an index number for the address to be used, default value is the current highest indexnumber +1. This indexnumber must be unique across all forwarders.</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Private key</td>
+                            <td>for type "Private key"</td>
+                            <td>string</td>
+                            <td>If you chose “Private key” for the addressType, you need to enter the private key here.</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Name</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>Give the forwarder a short descriptive name.</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Description</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>In this area you can enter a more detailed description of the forwarder and its purpose.</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>XPUB</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>Specify the extended public key of a BIP44 wallet, this is where the bitcoins will be forwarded to.</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Creator</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>The name of the person responsible for the forwarder.</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Creator email</td>
+                            <td>yes</td>
+                            <td>email address</td>
+                            <td>An email address to contact the person responsible for the forwarder.</td>
+                        </tr>
+
+
+
+
+
+                        <tr>
+                            <td>Visibility</td>
+                            <td>yes</td>
+                            <td>"Public" or "Private"</td>
+                            <td>Public forwarders are shown on the main page. Private forwarders are only accessible to those who have a link containing the id of the forwarder.</td>
+                        </tr>
+
+                        <tr>
+                            <td>Minimum amount</td>
+                            <td>yes</td>
+                            <td>integer</td>
+                            <td>Specify a minimum amount (in Satoshis) to trigger the forwarder. If a transaction is received with a value below this amount, the bitcoins will be returned to the sender instead of forwarded. </td>
+                        </tr>
+
+                        <tr>
+                            <td>Youtube</td>
+                            <td>no</td>
+                            <td>string</td>
+                            <td>Here you can enter the video code of a youtube video. This is the code that comes after the “watch?v=” part in the youtube url.</td>
+                        </tr>
+
+
+
+                        <tr>
+                            <td>Forwarding fee percent</td>
+                            <td>no</td>
+                            <td>float</td>
+                            <td>Optionally a fee can be deducted from the forwarded amount.</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Forwarding fee address</td>
+                            <td>no</td>
+                            <td>string</td>
+                            <td>Specify an address to send the forwarding fees to.</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>Confirmation amount</td>
+                            <td>no</td>
+                            <td>integer</td>
+                            <td>Optionally specify an amount in Satoshis to send back to the sender as a sign of confirmation.</td>
+                        </tr>
+
+
+
+                    </table>
+                </div>
+
+
+
+            {{ googleAnalyticsHTML|safe }}
+            </div>
+        </div>
+    </div>
+    {{ footerHTML|safe }}
+</body>
+</html>
+{% endautoescape %}

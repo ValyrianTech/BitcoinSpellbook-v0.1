@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+<script language="javascript" type="text/javascript">
+    function showInputs(){
+        var addressType = document.getElementById('addressType').value;
+
+        if (addressType == "BIP44") {
+            document.getElementById('walletIndex').style.display = "block";
+            document.getElementById('privateKey').style.display = "none";
+        }
+        else if (addressType == "PrivKey"){
+            document.getElementById('walletIndex').style.display = "none";
+            document.getElementById('privateKey').style.display = "block";
+        }
+
+    }
+
+</script>
+
+
+</head>
+
+<body onload="showInputs();">
+    {{ navigationHTML|safe }}
+    <div ID="wrapper"> 
+
+
+        <div class="navigationTrail">
+            <a href="/admin?" >Admin home</a>
+            {% if forwarderID != 0 %}
+            > <a href="/forwarder?forwarderID={{forwarder.key.id()}}" >{{forwarder.name}}</a>
+            {% endif %}
+        </div>
+
+        <div id="Inputs" class="form">
+            <form action="/saveForwarder" method="post">
+                <input name="ForwarderID" type="hidden" value="{{forwarderID}}">
+                <div class="field-wrap">
+                    <label>Status</label>
+                    <select name="Status" style="width: 7em;">
+                        <option value="Pending" {% if forwarder.status == 'Pending' %}selected{% endif %}>Pending</option>
+                        <option value="Active" {% if forwarder.status == 'Active' %}selected{% endif %}>Active</option>
+                        <option value="Disabled" {% if forwarder.status == 'Disabled' %}selected{% endif %}>Disabled</option>
+                    </select>
+                </div>
+
+                <div class="field-wrap">
+                    <label>AddressType</label>
+                    <select id="addressType" name="AddressType" style="width: 7em;" onchange="showInputs();">
+                        <option value="BIP44" {% if forwarder.addressType == 'BIP44' %}selected{% endif %}>BIP44</option>
+                        <option value="PrivKey" {% if forwarder.addressType == 'PrivKey' %}selected{% endif %}>Private key</option>
+                    </select>
+                </div>
+
+                <div id="walletIndex" class="field-wrap">
+                    <label>Wallet index</label>
+                    <input name="WalletIndex" type="number" value="{{forwarder.walletIndex}}" style="width: 3em;">
+                </div>
+
+                <div id="privateKey" class="field-wrap">
+                    <label>Private Key</label>
+                    <input name="PrivateKey" type="text" value="{{forwarder.privateKey}}" style="width: 30em;">
+                </div>
+
+                <div class="field-wrap">
+                    <label>Address</label>
+                    <input name="Address" type="text" value="{{forwarder.address}}"  disabled>
+                </div>
+
+
+                <div class="field-wrap">
+                    <label>Name</label>
+                    <input name="ForwarderName" type="text" value="{{forwarder.name}}">
+                </div>
+
+                <div class="field-wrap">
+                    <label>Description</label>
+                    <textarea name="Description" type="text" rows="20">{{forwarder.description}}</textarea>
+                </div>
+
+                <div class="field-wrap">
+                    <label>XPUB</label>
+                    <textarea name="XPUB" type="text" rows="3">{{forwarder.xpub}}</textarea>
+                </div>
+
+                <div class="field-wrap">
+                    <label>Creator</label>
+                    <input name="Creator" type="text" value="{{forwarder.creator}}">
+                </div>
+
+                <div class="field-wrap">
+                    <label>Creator Email</label>
+                    <input name="CreatorEmail" type="text" value="{{forwarder.creatorEmail}}">
+                </div>
+
+                <div class="field-wrap">
+                    <label>Visibility</label>
+                    <select name="Visibility" style="width: 7em;">
+                        <option value="Public" {% if forwarder.visibility == 'Public' %}selected{% endif %}>Public</option>
+                        <option value="Private" {% if forwarder.visibility == 'Private' %}selected{% endif %}>Private</option>
+                    </select>
+                </div>
+
+                <div class="field-wrap">
+                    <label>Minimum amount</label>
+                    <input name="MinimumAmount" type="number" value="{{forwarder.minimumAmount}}" style="width: 7em;">
+                </div>
+
+                <div class="field-wrap">
+                    <label>Youtube</label>
+                    <input name="Youtube" type="text" value="{{forwarder.youtube}}">
+                </div>
+
+                {% if forwarder.youtube != '' %}
+                <div class="ForwarderYoutube">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{forwarder.youtube}}" frameborder="0" allowfullscreen></iframe>
+                </div>
+                {% endif %}
+
+
+                <div class="field-wrap">
+                    <label>Fee Percent (0 for no forwarding fee)</label>
+                    <input name="FeePercent" type="number" step="0.01" value="{{forwarder.feePercent}}" style="width: 7em;">
+                </div>
+
+                <div class="field-wrap">
+                    <label>Fee Address</label>
+                    <input name="FeeAddress" type="text" value="{{forwarder.feeAddress}}" >
+                </div>
+
+                <div class="field-wrap">
+                    <label>Confirmation Amount in Satoshis (0 for no confirmation)</label>
+                    <input name="ConfirmAmount" type="number" value="{{forwarder.confirmAmount}}" style="width: 7em;">
+                </div>
+
+                <input class="button center" type="submit" name="saveChanges" value="Save changes" >
+
+            </form>
+        </div>
+
+
+        <div class="navigationTrail">
+            <a href="/admin?" >Admin home</a>
+            {% if forwarderID != 0 %}
+            > <a href="/forwarder?forwarderID={{forwarder.key.id()}}" >{{forwarder.name}}</a>
+            {% endif %}
+        </div>
+
+
+        {{ googleAnalyticsHTML|safe }}
+          
+        <div class="push"></div>
+    </div> 
+            
+    {{ footerHTML|safe }}
+  
+
+
+ 
+</body>
+</html>
+
+
+{% endautoescape %}

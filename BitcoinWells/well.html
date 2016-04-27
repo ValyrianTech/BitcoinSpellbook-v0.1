@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+</head>
+
+<body onload="showOptimalInputs();">
+    {{ navigationHTML|safe }}
+    <div ID="wrapper"> 
+
+        <div class="navigationTrail">
+            <a href="/admin?" >Admin home</a>
+            {% if wellID != 0 %}
+            > <a href="/well?wellID={{wellID}}" >{{well.name}}</a>
+            {% endif %}
+        </div>
+
+
+        <div id="wellForm">
+            <form action="/saveWell" method="post" class="form">
+                <h1>Well</h1>
+                <input name="WellID" type="hidden" value="{{well.key.id()}}">
+
+                <div class="field-wrap">
+                    Name<input name="WellName" type="text" value="{{well.name}}">
+                </div>
+
+                <div class="field-wrap">
+                    Address<input name="WellAddress" type="text" value="{{well.address}}">
+                </div>
+
+                <div class="field-wrap">
+                    Status<select name="Status" style="width: 7em;">
+                        <option value="Pending" {% if well.status == 'Pending' %}selected{% endif %}>Pending</option>
+                        <option value="Active" {% if well.status == 'Active' %}selected{% endif %}>Active</option>
+                        <option value="Disabled" {% if well.status == 'Disabled' %}selected{% endif %}>Disabled</option>
+                    </select>
+                </div>
+
+                <div class="field-wrap">
+                    Visibility<select name="Visibility" style="width: 7em;">
+                        <option value="Public" {% if well.visibility == 'Public' %}selected{% endif %}>Public</option>
+                        <option value="Private" {% if well.visibility == 'Private' %}selected{% endif %}>Private</option>
+                    </select>
+                </div>
+
+                <div class="field-wrap">
+                    Description<textarea name="Description" type="text" rows="20">{{well.description}}</textarea>
+                </div>
+
+                <div class="field-wrap">
+                    Tags (separate multiple tags with ';')<textarea name="WellTags" type="text" rows="2">{{well.tags}}</textarea>
+                </div>
+
+                <div class="field-wrap">
+                    Youtube<input name="Youtube" type="text" value="{{well.youtube}}">
+                    {% if well.youtube != '' %}
+                    <div class="WellYoutube">
+                        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{well.youtube}}" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="field-wrap">
+                    Creator<input name="Creator" type="text" value="{{well.creator}}">
+                </div>
+                <div class="field-wrap">
+                    Creator Email<input name="CreatorEmail" type="text" value="{{well.creatorEmail}}">
+                </div>
+
+                <div class="field-wrap">
+                    Sort order<input name="WellSortOrder" type="number" value="{{well.sortOrder}}">
+                </div>
+
+
+
+                <input class="button center" type="submit" name="saveChanges" value="Save" >
+
+            </form>
+
+            <div id="CampaignsDiv">
+                {% if wellID != 0 %}
+                    <div class="campaignsHeader">Campaigns</div>
+                    <table class="flatTable">
+                        <tr>
+                            <th class="cell">Name</th>
+                            <th class="cell">Target</th>
+                            <th class="cell">Creation date</th>
+                            <th class="cell">Delete</th>
+
+                        </tr>
+
+                        {% for campaign in campaigns%}
+                            <tr>
+                                <td class="cell"><a href="campaign?wellID={{well.key.id()}}&campaignID={{campaign.key.id()}}">{{ campaign.name}}</a></td>
+                                <td class="cell">{{ campaign.target }}</td>
+                                <td class="cell">{{ campaign.creationDate.strftime('%d/%m/%Y %H:%M') }}</td>
+                                <td class="cell"><a href="confirm?wellID={{well.key.id()}}&campaignID={{campaign.key.id()}}"><img class="deleteIcon" src="stylesheets/images/deleteIcon.png" alt="Delete"></a></td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+
+                    <a class="buttonDiv" href="/campaign?wellID={{well.key.id()}}" >
+                        <div id="createCampaignButton" class="button center">New campaign</div>
+                    </a>
+                {% endif %}
+            </div>
+
+
+
+        </div>
+
+        <div class="navigationTrail">
+            <a href="/admin?" >Admin home</a>
+            {% if wellID != 0 %}
+            > <a href="/well?wellID={{wellID}}" >{{well.name}}</a>
+            {% endif %}
+        </div>
+        {{ googleAnalyticsHTML|safe }}
+          
+        <div class="push"></div>
+    </div> 
+            
+    {{ footerHTML|safe }}
+  
+
+
+ 
+</body>
+</html>
+
+
+{% endautoescape %}

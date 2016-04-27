@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+{% autoescape true %}
+
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+</head>
+<body>
+    {{ navigationHTML|safe }}
+
+    <div id="wrapper">
+        <div id="documentation-wrapper">
+            <div class="documentation-title">API documentation</div>
+            <div class="documentation-section" id="Proposal">
+                <div class="documentation-header">Bitvoter: Proposal</div>
+
+                <div class="documentation-description">
+                    <p>If format is 'json', returns a dictionary object containing all the details of the proposal.
+                        If format is omitted, will generate a html page containing QR-codes for each option.</p>
+                </div>
+
+
+
+                <div class="documentation-arguments">
+                    Arguments:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Required</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>format</td>
+                            <td>no</td>
+                            <td>string</td>
+                            <td>Format of the results, can be "json", if omitted, a html page will be generated</td>
+                        </tr>
+
+                        <tr>
+                            <td>address</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>A Bitcoin address</td>
+                        </tr>
+
+                        <tr>
+                            <td>proposal</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>A description of the proposal</td>
+                        </tr>
+
+                        <tr>
+                            <td>options</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>An string containing all the options, separated with "|"</td>
+                        </tr>
+
+                        <tr>
+                            <td>cost</td>
+                            <td>yes</td>
+                            <td>integer</td>
+                            <td>Base cost for each vote, in Satoshis</td>
+                        </tr>
+
+                        <tr>
+                            <td>digits</td>
+                            <td>yes</td>
+                            <td>integer</td>
+                            <td>Number of digits of the amount that are used to indicate the chosen option</td>
+                        </tr>
+
+                        <tr>
+                            <td>weights</td>
+                            <td>no</td>
+                            <td>string</td>
+                            <td>"Equal", "Value", "SIL", "LBL", "LRL", "LSL"</td>
+                        </tr>
+
+                        <tr>
+                            <td>regAddress</td>
+                            <td>only for "SIL", "LBL", "LRL", "LSL"</td>
+                            <td>string</td>
+                            <td>A Bitcoin address to register for this proposal</td>
+                        </tr>
+
+                        <tr>
+                            <td>regBlock</td>
+                            <td>no</td>
+                            <td>integer</td>
+                            <td>A block height for the registration, if omitted the latest  blockheight is used.</td>
+                        </tr>
+
+                        <tr>
+                            <td>regXPUB</td>
+                            <td>only for "LBL", "LRL", "LSL"</td>
+                            <td>string</td>
+                            <td>An extended public key (BIP32) for the registration</td>
+                        </tr>
+
+
+                    </table>
+                </div>
+
+                <div class="documentation-example-input">
+                    JSON Example: <a href="proposal?format=json&address=1G9JikTQ2TWUuNMP8bPPBYs7VtchzxLF2v&proposal=What should we invest our money in?&options=No opinion|Buy Machine A|Buy Machine B|SatoshiDice&cost=50000&digits=1&weights=LRL&regAddress=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A&regXPUB=xpub6CUvzHsNLcxthhGJesNDPSh2gicdHLPAAeyucP2KW1vBKEMxvDWCYRJZzM4g7mNiQ4Zb9nG4y25884SnYAr1P674yQipYLU8pP5z8AmahmD&regBlock=376000">proposal?format=json&address=1G9JikTQ2TWUuNMP8bPPBYs7VtchzxLF2v&proposal=What should we invest our money in?&options=No opinion|Buy Machine A|Buy Machine B|SatoshiDice&cost=50000&digits=1&weights=LRL&regAddress=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A&regXPUB=xpub6CUvzHsNLcxthhGJesNDPSh2gicdHLPAAeyucP2KW1vBKEMxvDWCYRJZzM4g7mNiQ4Zb9nG4y25884SnYAr1P674yQipYLU8pP5z8AmahmD&regBlock=376000</a>
+                </div>
+
+                 <div class="documentation-example-input">
+                    HTML Example: <a href="proposal?address=1G9JikTQ2TWUuNMP8bPPBYs7VtchzxLF2v&proposal=What should we invest our money in?&options=No opinion|Buy Machine A|Buy Machine B|SatoshiDice&cost=50000&digits=1&weights=LRL&regAddress=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A&regXPUB=xpub6CUvzHsNLcxthhGJesNDPSh2gicdHLPAAeyucP2KW1vBKEMxvDWCYRJZzM4g7mNiQ4Zb9nG4y25884SnYAr1P674yQipYLU8pP5z8AmahmD&regBlock=376000">proposal?address=1G9JikTQ2TWUuNMP8bPPBYs7VtchzxLF2v&proposal=What should we invest our money in?&options=No opinion|Buy Machine A|Buy Machine B|SatoshiDice&cost=50000&digits=1&weights=LRL&regAddress=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A&regXPUB=xpub6CUvzHsNLcxthhGJesNDPSh2gicdHLPAAeyucP2KW1vBKEMxvDWCYRJZzM4g7mNiQ4Zb9nG4y25884SnYAr1P674yQipYLU8pP5z8AmahmD&regBlock=376000</a>
+                </div>
+
+                <div class="documentation-return-values">
+                    Return values:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>success</td>
+                            <td>integer</td>
+                            <td>1 = success, 0 = fail</td>
+                        </tr>
+
+                        <tr>
+                            <td>proposal</td>
+                            <td>dict</td>
+                            <td>dictionary containing all details of the proposal</td>
+                        </tr>
+
+                        <tr>
+                            <td>- address</td>
+                            <td>string</td>
+                            <td>A Bitcoin address</td>
+                        </tr>
+
+                        <tr>
+                            <td>- proposal</td>
+                            <td>string</td>
+                            <td>A description of the proposal</td>
+                        </tr>
+
+                        <tr>
+                            <td>- digits</td>
+                            <td>integer</td>
+                            <td>Number of digits of the amount that are used to indicate the chosen option</td>
+                        </tr>
+
+                        <tr>
+                            <td>- cost</td>
+                            <td>integer</td>
+                            <td>Base cost for each vote, in Satoshis</td>
+                        </tr>
+
+                        <tr>
+                            <td>- options</td>
+                            <td>array</td>
+                            <td>An array containing all options</td>
+                        </tr>
+
+                        <tr>
+                            <td>- weights</td>
+                            <td>string</td>
+                            <td>"Equal", "Value", "SIL", "LBL", "LRL", "LSL"</td>
+                        </tr>
+
+                        <tr>
+                            <td>- regAddress</td>
+                            <td>string</td>
+                            <td>A Bitcoin address to register for this proposal</td>
+                        </tr>
+
+                        <tr>
+                            <td>- regBlock</td>
+                            <td>integer</td>
+                            <td>A block height for the registration, if omitted the latest  blockheight is used.</td>
+                        </tr>
+
+                        <tr>
+                            <td>- regXPUB</td>
+                            <td>string</td>
+                            <td>An extended public key (BIP32) for the registration</td>
+                        </tr>
+
+                        <tr>
+                            <td>- proposalHash</td>
+                            <td>string</td>
+                            <td>A hash of the address, proposal and opinions</td>
+                        </tr>
+
+                        <tr>
+                            <td>error</td>
+                            <td>string</td>
+                            <td>error message in case something went wrong</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="documentation-return-example">
+                Return example:
+                <span><pre>
+{
+    "success": 1,
+    "proposal": {u'address': u'1G9JikTQ2TWUuNMP8bPPBYs7VtchzxLF2v',
+                 u'cost': 50000,
+                 u'digits': 1,
+                 u'options': [[0,
+                               {u'QR': u'http://www.btcfrog.com/qr/bitcoinPNG.php?address=1G9JikTQ2TWUuNMP8bPPBYs7VtchzxLF2v&amount=0.0005&error=H',
+                                u'amount': 50000,
+                                u'description': u'No opinion',
+                                u'row': u'Even'}],
+                              [1,
+                               {u'QR': u'http://www.btcfrog.com/qr/bitcoinPNG.php?address=1G9JikTQ2TWUuNMP8bPPBYs7VtchzxLF2v&amount=0.00050001&error=H',
+                                u'amount': 50001,
+                                u'description': u'Buy Machine A',
+                                u'row': u'Odd'}],
+                              [2,
+                               {u'QR': u'http://www.btcfrog.com/qr/bitcoinPNG.php?address=1G9JikTQ2TWUuNMP8bPPBYs7VtchzxLF2v&amount=0.00050002&error=H',
+                                u'amount': 50002,
+                                u'description': u'Buy Machine B',
+                                u'row': u'Even'}],
+                              [3,
+                               {u'QR': u'http://www.btcfrog.com/qr/bitcoinPNG.php?address=1G9JikTQ2TWUuNMP8bPPBYs7VtchzxLF2v&amount=0.00050003&error=H',
+                                u'amount': 50003,
+                                u'description': u'SatoshiDice',
+                                u'row': u'Odd'}]],
+                 u'proposal': u'What should we invest our money in?',
+                 u'proposalHash': u'ede22a276b0eb8167609f334d91cbfcc57028dd7654f5f7806d3d738dce12686',
+                 u'regAddress': u'1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A',
+                 u'regBlock': 376000,
+                 u'regXPUB': u'xpub6CUvzHsNLcxthhGJesNDPSh2gicdHLPAAeyucP2KW1vBKEMxvDWCYRJZzM4g7mNiQ4Zb9nG4y25884SnYAr1P674yQipYLU8pP5z8AmahmD',
+                 u'weights': u'SIL'}
+}
+                </pre></span>
+                </div>
+            </div>
+
+            <div class="documentation-section" id="Results">
+                <div class="documentation-header">Bitvoter: Results</div>
+
+                <div class="documentation-description">
+                    <p>Returns a dictionary containing the results of a proposal.</p>
+                </div>
+
+
+
+                <div class="documentation-arguments">
+                    Arguments:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Required</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>format</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>Format of the results, should be “json”</td>
+                        </tr>
+
+                        <tr>
+                            <td>proposalAddress</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>A Bitcoin address</td>
+                        </tr>
+
+                        <tr>
+                            <td>proposalBlock</td>
+                            <td>no</td>
+                            <td>integer</td>
+                            <td>A block height, if omitted the latest  blockheight is used.</td>
+                        </tr>
+
+                        <tr>
+                            <td>weights</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>"Equal", "Value", "SIL", "LBL", "LRL", "LSL"</td>
+                        </tr>
+
+                        <tr>
+                            <td>regAddress</td>
+                            <td>only for "SIL", "LBL", "LRL", "LSL"</td>
+                            <td>string</td>
+                            <td>A Bitcoin address to register for this proposal</td>
+                        </tr>
+
+                        <tr>
+                            <td>regBlock</td>
+                            <td>no</td>
+                            <td>integer</td>
+                            <td>A block height for the registration, if omitted the latest  blockheight is used.</td>
+                        </tr>
+
+                        <tr>
+                            <td>regXPUB</td>
+                            <td>only for "LBL", "LRL", "LSL"</td>
+                            <td>string</td>
+                            <td>An extended public key (BIP32) for the registration</td>
+                        </tr>
+
+
+                        <tr>
+                            <td>digits</td>
+                            <td>yes</td>
+                            <td>integer</td>
+                            <td>number of significant digits</td>
+                        </tr>
+
+                        <tr>
+                            <td>proposal</td>
+                            <td>no</td>
+                            <td>string</td>
+                            <td>A description of the proposal</td>
+                        </tr>
+
+                        <tr>
+                            <td>options</td>
+                            <td>no</td>
+                            <td>string</td>
+                            <td>An string containing all the options, separated with "|"</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+                <div class="documentation-example-input">
+                    JSON Example: <a href="results?format=json&proposalAddress=1G9JikTQ2TWUuNMP8bPPBYs7VtchzxLF2v&proposalBlock=400000&weights=LRL&digits=1&regAddress=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A&regBlock=376000&regXPUB=xpub6CUvzHsNLcxthhGJesNDPSh2gicdHLPAAeyucP2KW1vBKEMxvDWCYRJZzM4g7mNiQ4Zb9nG4y25884SnYAr1P674yQipYLU8pP5z8AmahmD&proposal=What should we invest our money in?&options=No opinion|Buy Machine A|Buy Machine B|SatoshiDice">results?format=json&proposalAddress=1G9JikTQ2TWUuNMP8bPPBYs7VtchzxLF2v&proposalBlock=400000&weights=LRL&digits=1&regAddress=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A&regBlock=400000&regXPUB=xpub6CUvzHsNLcxthhGJesNDPSh2gicdHLPAAeyucP2KW1vBKEMxvDWCYRJZzM4g7mNiQ4Zb9nG4y25884SnYAr1P674yQipYLU8pP5z8AmahmD&proposal=What should we invest our money in?&options=No opinion|Buy Machine A|Buy Machine B|SatoshiDice</a>
+                </div>
+
+                <div class="documentation-example-input">
+                    HTML Example: <a href="results?proposalAddress=1G9JikTQ2TWUuNMP8bPPBYs7VtchzxLF2v&proposalBlock=400000&weights=LRL&digits=1&regAddress=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A&regBlock=376000&regXPUB=xpub6CUvzHsNLcxthhGJesNDPSh2gicdHLPAAeyucP2KW1vBKEMxvDWCYRJZzM4g7mNiQ4Zb9nG4y25884SnYAr1P674yQipYLU8pP5z8AmahmD&proposal=What should we invest our money in?&options=No opinion|Buy Machine A|Buy Machine B|SatoshiDice">results?proposalAddress=1G9JikTQ2TWUuNMP8bPPBYs7VtchzxLF2v&proposalBlock=400000&weights=LRL&digits=1&regAddress=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A&regBlock=400000&regXPUB=xpub6CUvzHsNLcxthhGJesNDPSh2gicdHLPAAeyucP2KW1vBKEMxvDWCYRJZzM4g7mNiQ4Zb9nG4y25884SnYAr1P674yQipYLU8pP5z8AmahmD&proposal=What should we invest our money in?&options=No opinion|Buy Machine A|Buy Machine B|SatoshiDice</a>
+                </div>
+
+                <div class="documentation-return-values">
+                    Return values:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>success</td>
+                            <td>integer</td>
+                            <td>1 = success, 0 = fail</td>
+                        </tr>
+
+                        <tr>
+                            <td>results</td>
+                            <td>dict</td>
+                            <td>dictionary containing the results</td>
+                        </tr>
+
+                        <tr>
+                            <td>options</td>
+                            <td>dict</td>
+                            <td>dictionary containing the options</td>
+                        </tr>
+
+                        <tr>
+                            <td>proposal</td>
+                            <td>string</td>
+                            <td>A description of the proposal</td>
+                        </tr>
+
+                        <tr>
+                            <td>proposalAddress</td>
+                            <td>string</td>
+                            <td>The Bitcoin address associated with this proposal</td>
+                        </tr>
+
+                        <tr>
+                            <td>digits</td>
+                            <td>integer</td>
+                            <td>Number of significant digits</td>
+                        </tr>
+
+                        <tr>
+                            <td>block</td>
+                            <td>integer</td>
+                            <td>Blockheight of the results</td>
+                        </tr>
+
+                        <tr>
+                            <td>weights</td>
+                            <td>string</td>
+                            <td>source of the weights for the votes</td>
+                        </tr>
+
+                        <tr>
+                            <td>regAddress</td>
+                            <td>string</td>
+                            <td>Registration addres for the proposal</td>
+                        </tr>
+
+                        <tr>
+                            <td>regBlock</td>
+                            <td>integer</td>
+                            <td>Registration blockheight for the proposal</td>
+                        </tr>
+
+                        <tr>
+                            <td>regXPUB</td>
+                            <td>string</td>
+                            <td>Registration XPUB for the proposal</td>
+                        </tr>
+
+                        <tr>
+                            <td>proposalHash</td>
+                            <td>string</td>
+                            <td>A hash of the address, proposal and opinions</td>
+                        </tr>
+
+                        <tr>
+                            <td>error</td>
+                            <td>string</td>
+                            <td>error message in case something went wrong</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="documentation-return-example">
+                Return example:
+                <span><pre>
+
+
+{
+    "success": 1,
+    "proposalAddress": "1G9JikTQ2TWUuNMP8bPPBYs7VtchzxLF2v",
+    "weights": "LRL",
+    "digits": 1,
+    "block": 400000,
+    "results": {
+        "0": 255000,
+        "1": 685000,
+        "2": 1481338,
+        "3": 1248000
+    },
+    "regAddress": "1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A",
+    "regBlock": 376000,
+    "regXPUB": "xpub6CUvzHsNLcxthhGJesNDPSh2gicdHLPAAeyucP2KW1vBKEMxvDWCYRJZzM4g7mNiQ4Zb9nG4y25884SnYAr1P674yQipYLU8pP5z8AmahmD",
+    "proposalHash": "ede22a276b0eb8167609f334d91cbfcc57028dd7654f5f7806d3d738dce12686",
+    "proposal": "What should we invest our money in?",
+    "options": {
+        "0": "No opinion",
+        "1": "Buy Machine A",
+        "2": "Buy Machine B",
+        "3": "SatoshiDice"
+    }
+}
+                </pre></span>
+                </div>
+            </div>
+
+            {{ googleAnalyticsHTML|safe }}
+        </div>
+    </div>
+
+    {{ footerHTML|safe }}
+</body>
+</html>
+{% endautoescape %}

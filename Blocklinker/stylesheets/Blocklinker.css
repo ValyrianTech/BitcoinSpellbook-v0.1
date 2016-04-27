@@ -1,0 +1,25 @@
+
+
+#AddressLinking {
+    width: 50%;
+    clear: both;
+    margin: auto;
+    padding: 10px;
+
+}
+
+.SILAddress, .linkedAddress {
+    text-align: right;
+    font-size: 16px;
+    float: left;
+}
+
+
+.metric {
+    float: right;
+    text-align: right;
+    font-size: 16px;
+    padding: 10px;
+}
+
+

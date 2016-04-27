@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript">
+
+      // Load the Visualization API and the piechart package.
+      google.load('visualization', '1.0', {'packages':['corechart']});
+
+      // Set a callback to run when the Google Visualization API is loaded.
+      google.setOnLoadCallback(drawChart);
+
+      // Callback that creates and populates a data table,
+      // instantiates the pie chart, passes in the data and
+      // draws it.
+      function drawChart() {
+
+        // Create the data table.
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Address');
+        data.addColumn('number', 'BTC');
+        data.addRows([
+          {% for i in range(0, nDistribution) %}
+
+            [ '{{ distribution[i][0] }}', {{ distribution[i][1] }} ] ,
+          {% endfor %}
+        ]);
+
+        // Set chart options
+        var options = {'title':'Chance per address',
+
+                       'chartArea':{top:20,width:"80%",height:"90%"},
+                       'backgroundColor': 'transparent',
+                       };
+
+        // Instantiate and draw our chart, passing in some options.
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+        chart.draw(data, options);
+      }
+    </script>
+
+
+
+</head>
+<body onload="fillValues()">
+
+<script language="javascript" type='text/javascript'>
+    function fillValues(){
+        var addressField = document.getElementById('address');
+        addressField.value = '{{address}}';
+
+        var xpubField = document.getElementById('xpub');
+        xpubField.value = '{{xpub}}';
+
+        toggleInputs();
+    }
+
+    function toggleInputs() {
+
+        var source = document.getElementById('metric');
+        var blocklinkerInputs = document.getElementById('blocklinkerInputs');
+
+        if (source.value == 'SIL') {
+            blocklinkerInputs.style.display = 'none';
+        }
+        else {
+            blocklinkerInputs.style.display = 'block';
+        }
+    }
+
+    function reloadPage(){
+        var address = document.getElementById('address').value;
+        var regBlock = document.getElementById('regBlock').value;
+        var xpub = document.getElementById('xpub').value;
+        var metric = document.getElementById('metric').value;
+        var block = document.getElementById('block').value;
+
+        var url = "ProportionalRandom?address=" + address ;
+
+        if (metric != '') {
+            url += "&metric=" + metric;
+        }
+
+        if (xpub != '') {
+            url += "&xpub=" + xpub;
+        }
+
+        if (regBlock != 0) {
+            url += "&regBlock=" + regBlock;
+        }
+
+        if (block != 0) {
+            url += "&block=" + block;
+        }
+        window.location = url ;
+
+    }
+
+</script>
+
+    {{ navigationHTML|safe }}
+
+    <div id="wrapper">
+            <br><br>
+            <div class="SpellTitle">Chapter 5: Proportional Random</div>
+
+            <div class="SpellDescription">
+                <p>Here is a little spell that will let you introduce a random element into your magic by specifying
+                    a blockheight. It will identify a Bitcoin address from a supplied list such as a SIL, LBL, LRL or
+                    a LSL. The odds of each address to be chosen depend on its corresponding value.</p>
+
+                <p>The results of the this spell are unpredictable for blockheights that have yet come to pass,
+                    but once they have been set into stone, they will never change. The chosen address will be
+                    revealed when the blockhash spins the wheel of destiny!</p>
+
+            </div>
+            <br><br>
+            <div id="Inputs" class="form">
+                <form action="/" method="post">
+                        <div class="field-wrap">
+                            <label>Distribution source</label>
+                            <select id="metric" onchange="toggleInputs();" >
+                              <option value="SIL" {% if metric == 'SIL' %}selected{% endif %} >Simplified Inputs</option>
+                              <option value="LBL" {% if metric == 'LBL' %}selected{% endif %} >Linked Balance</option>
+                              <option value="LRL" {% if metric == 'LRL' %}selected{% endif %} >Linked Received</option>
+                              <option value="LSL" {% if metric == 'LSL' %}selected{% endif %} >Linked Sent</option>
+                            </select>
+                        </div>
+
+
+
+                    <div class="field-wrap">
+                        <label>Bitcoin address <span class="req">*</span></label>
+                        <input id="address" type="text" required autocomplete="off">
+                    </div>
+
+                    <div class="field-wrap">
+                            <label>Block height for SIL</label>
+                            <input id="regBlock" type="number" value="{{regBlock}}" style="width: 5em" title="optional blockheight for the SIL, default=0"/>
+                    </div>
+
+                    <div id="blocklinkerInputs">
+                        <div class="field-wrap">
+                            <label>XPUB <span class="req">*</span></label>
+                            <input id="xpub" type="text" required autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="field-wrap">
+                            <label>Block height for random number generator</label>
+                            <input id="block" type="number" value="{{block}}" style="width: 5em" title="optional blockheight, default=0"/>
+                    </div>
+
+                    <div class="button center" onclick="reloadPage()">Get winning address</div>
+
+                </form>
+
+            </div>
+
+
+            {% if error != '' %}
+                <div class="ErrorMessage">Error: {{error}}</div>
+            {% endif %}
+                <br><br>
+
+
+
+                <div id="WinnerSection">
+                    {% if latestBlock < block %}
+                        <div><h1>Specified blockheight not yet reached. ETA: {{ (block - latestBlock)*10 }} minutes.</h1></div>
+                    {% elif nDistribution == 0 and address != ''%}
+                        <div><h1>No distribution found.</h1></div>
+
+                    {% elif latestBlock >= block and address != ''%}
+                        <div class="winnerHeader">Winner for block {{block}}:</div>
+                        <div class="winner"><a href="https://www.blocktrail.com/BTC/address/{{winnerAddress}}">{{winnerAddress}}</a></div>
+
+                        <div id="explanation">
+                            <h3>How was the winner chosen?</h3>
+                            <span>
+                                <h4>The hash of block {{block}} is {{hash}}.
+                                Converting the hash to an integer we get: {{intHash}}, this is turned into a float by reversing the numbers and adding '0.' in front: {{rand}};
+                                multiply this by the total cumulative value ({{totalValue}}) and we get the cumulative target: {{rand * totalValue}}.
+                                The first address where the cumulative target is below the cumulative value is chosen as the winner.</h4>
+                            </span>
+                        </div>
+
+                    {% endif %}
+                </div>
+
+
+                {% if nDistribution > 0 %}
+                    <div id="piechart"></div>
+
+                    <br><br>
+
+                    <div id="distribution">
+                        <table class="flatTable">
+
+                        <tr class="titleTr">
+                            <td class="titleTd">Address</td>
+                            <td class="titleTd">Value</td>
+                            <td class="titleTd">Cumulative</td>
+                        </tr>
+
+                        {% for i in range(0, nDistribution) %}
+                        <tr class="{% if i == winnerIndex %} chosenWinner {% endif %}">
+                            <td class="distribution_input">{{i+1}}: <a href="https://www.blocktrail.com/BTC/address/{{distribution[i][0]}}">{{distribution[i][0]}}</a></td>
+                            <td class="distribution_value">{{distribution[i][1]}}</td>
+                            <td class="distribution_cumulative">{{distribution[i][2]}}</td>
+                        </tr>
+
+                        {% endfor %}
+                        </table>
+
+
+                    </div>
+                    <br><br>
+
+                {% endif %}
+
+        {{ googleAnalyticsHTML|safe }}
+    </div>
+
+
+
+
+
+
+{{ footerHTML|safe }}
+</body>
+</html>
+{% endautoescape %}

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+{% autoescape true %}
+
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+</head>
+<body>
+    {{ navigationHTML|safe }}
+
+    <div id="wrapper">
+        <div id="documentation-wrapper">
+            <div class="documentation-title">API documentation</div>
+            <div class="documentation-section" id="ProportionalRandom">
+                <div class="documentation-header">Proportional random</div>
+
+                <div class="documentation-description">
+                    <p>Returns a randomly chosen Bitcoin address from a SIL, LBL, LRL or LSL where the corresponding value
+                        represents the proportional chance of that address being chosen. The hash of a specified block is used as a random number generator.</p>
+                </div>
+
+
+
+                <div class="documentation-arguments">
+                    Arguments:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Required</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>format</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>Format of the results, should be “json”</td>
+                        </tr>
+
+                        <tr>
+                            <td>metric</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>Distribution source: "SIL", "LBL", "LRL" or "LSL"</td>
+                        </tr>
+
+                        <tr>
+                            <td>address</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>A Bitcoin address</td>
+                        </tr>
+
+                        <tr>
+                            <td>regBlock</td>
+                            <td>no</td>
+                            <td>integer</td>
+                            <td>A block height for the registration address, if omitted the latest blockheight is used.</td>
+                        </tr>
+
+                        <tr>
+                            <td>block</td>
+                            <td>yes</td>
+                            <td>integer</td>
+                            <td>A block height for the random number generator</td>
+                        </tr>
+
+                        <tr>
+                            <td>XPUB</td>
+                            <td>yes, except for SIL</td>
+                            <td>string</td>
+                            <td>An extended public key (BIP32)</td>
+                        </tr>
+
+
+                    </table>
+                </div>
+
+                <div class="documentation-example-input">
+                    JSON Example: <a href="ProportionalRandom?format=json&address=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A&regBlock=376000&metric=LRL&xpub=xpub6CUvzHsNLcxthhGJesNDPSh2gicdHLPAAeyucP2KW1vBKEMxvDWCYRJZzM4g7mNiQ4Zb9nG4y25884SnYAr1P674yQipYLU8pP5z8AmahmD&block=400000">ProportionalRandom?format=json&address=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A&regBlock=376000&metric=LRL&xpub=xpub6CUvzHsNLcxthhGJesNDPSh2gicdHLPAAeyucP2KW1vBKEMxvDWCYRJZzM4g7mNiQ4Zb9nG4y25884SnYAr1P674yQipYLU8pP5z8AmahmD&block=400000</a>
+                </div>
+
+                <div class="documentation-example-input">
+                    HTML Example: <a href="ProportionalRandom?address=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A&regBlock=376000&metric=LRL&xpub=xpub6CUvzHsNLcxthhGJesNDPSh2gicdHLPAAeyucP2KW1vBKEMxvDWCYRJZzM4g7mNiQ4Zb9nG4y25884SnYAr1P674yQipYLU8pP5z8AmahmD&block=400000">ProportionalRandom?format=json&address=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A&regBlock=376000&metric=LRL&xpub=xpub6CUvzHsNLcxthhGJesNDPSh2gicdHLPAAeyucP2KW1vBKEMxvDWCYRJZzM4g7mNiQ4Zb9nG4y25884SnYAr1P674yQipYLU8pP5z8AmahmD&block=400000</a>
+                </div>
+
+                <div class="documentation-return-values">
+                    Return values:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>success</td>
+                            <td>integer</td>
+                            <td>1 = success, 0 = fail</td>
+                        </tr>
+
+                        <tr>
+                            <td>winnerAddress</td>
+                            <td>string</td>
+                            <td>the randomly chosen Bitcoin address</td>
+                        </tr>
+
+                        <tr>
+                            <td>winnerIndex</td>
+                            <td>integer</td>
+                            <td>the index of the randomly chosen Bitcoin address</td>
+                        </tr>
+
+                        <tr>
+                            <td>intHash</td>
+                            <td>integer</td>
+                            <td>Blockhash converted to integer</td>
+                        </tr>
+
+                        <tr>
+                            <td>random</td>
+                            <td>float</td>
+                            <td>the intHash in reverse, with "0." added in front so it is a number between 0 and 1.</td>
+                        </tr>
+
+                        <tr>
+                            <td>target</td>
+                            <td>float</td>
+                            <td>Total received amount multiplied by the random number</td>
+                        </tr>
+
+                        <tr>
+                            <td>distribution</td>
+                            <td>array</td>
+                            <td>Distribution data that was used, format: [[address, value, cumulative value], ...]</td>
+                        </tr>
+                        <tr>
+                            <td>error</td>
+                            <td>string</td>
+                            <td>error message in case something went wrong</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="documentation-return-example">
+                Return example:
+                <span><pre>
+
+{
+    "winner": {
+        "intHash": 120710373098925203423153928968980716850743356911342468975,
+        "random": 0.5798642431196533,
+        "target": 2127717.9021201828,
+        "distribution": [
+            ["1Robbk6PuJst6ot6ay2DcVugv8nxfJh5y", 1248000, 1248000],
+            ["1SansacmMr38bdzGkzruDVajEsZuiZHx9", 685000, 1933000],
+            ["1AryaZJnXcMxJua4CpKaNUNRxbu7tmZSf1", 753338, 2686338],
+            ["1Branzwx1RceFrHsjSQK1sHzyeRB7BMoWT", 458000, 3144338],
+            ["1Jon1mTMWTwv4bYZy8ZaCHEvjGGXUmMD1X", 255000, 3399338],
+            ["1Jon2kyK579Wh1rvPzQvrQkJ64xzAFb2fn", 270000, 3669338]],
+        "winnerIndex": 2,
+        "winnerAddress": "1AryaZJnXcMxJua4CpKaNUNRxbu7tmZSf1"
+    },
+    "success": 1
+}
+
+                </pre></span>
+                </div>
+            </div>
+
+
+
+
+
+            {{ googleAnalyticsHTML|safe }}
+        </div>
+    </div>
+
+    {{ footerHTML|safe }}
+</body>
+</html>
+{% endautoescape %}

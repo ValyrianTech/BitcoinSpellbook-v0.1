@@ -1,0 +1,55 @@
+
+
+#WinnerSection {
+    width: 75%;
+    margin: auto;
+
+    text-align: center;
+}
+
+.winnerHeader {
+    font-size: 48px;
+    padding: 20px;
+}
+
+.winner {
+    font-size: 24px;
+    padding: 30px;
+    background-color: LawnGreen;
+
+}
+
+#explanation {
+    width: 75%;
+    margin: auto;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    text-align: justify;
+    word-break: break-all;
+}
+
+
+#blocklinkerInputs {
+    display: none;
+}
+
+#distribution {
+    width: 70%;
+    clear: both;
+    text-align: center;
+    margin: auto;
+}
+
+.distribution_input {
+    text-align: left;
+    font-size: 18px;
+}
+
+.distribution_value, .distribution_cumulative {
+    text-align: right;
+    font-size: 18px;
+}
+
+.chosenWinner {
+    background-color: LawnGreen;
+}

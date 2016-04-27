@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+{% autoescape true %}
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+<script language="javascript" type="text/javascript">
+    function showInputs(){
+        var addressType = document.getElementById('addressType').value;
+
+        if (addressType == "BIP44") {
+            document.getElementById('walletIndex').style.display = "block";
+            document.getElementById('privateKey').style.display = "none";
+        }
+        else if (addressType == "PrivKey"){
+            document.getElementById('walletIndex').style.display = "none";
+            document.getElementById('privateKey').style.display = "block";
+        }
+
+        var distributionSource = document.getElementById('distributionSource').value;
+
+        if (distributionSource == 'Custom'){
+            document.getElementById('customDistributiondiv').style.display = 'block';
+            document.getElementById('registrationAddressdiv').style.display = 'none';
+            document.getElementById('registrationXPUBdiv').style.display = 'none';
+            document.getElementById('registrationBlockheightdiv').style.display = 'none';
+        }
+
+        else if (distributionSource == 'SIL'){
+            document.getElementById('customDistributiondiv').style.display = 'none';
+            document.getElementById('registrationAddressdiv').style.display = 'block';
+            document.getElementById('registrationXPUBdiv').style.display = 'none';
+            document.getElementById('registrationBlockheightdiv').style.display = 'block';
+        }
+        else if (distributionSource == 'LBL' || weights == 'LRL' || weights == 'LSL'){
+            document.getElementById('customDistributiondiv').style.display = 'none';
+            document.getElementById('registrationAddressdiv').style.display = 'block';
+            document.getElementById('registrationXPUBdiv').style.display = 'block';
+            document.getElementById('registrationBlockheightdiv').style.display = 'block';
+        }
+
+
+    }
+
+</script>
+
+
+
+</head>
+
+<body onload="showInputs();">
+    {{ navigationHTML|safe }}
+    <div ID="wrapper"> 
+
+        <div class="navigationTrail">
+            <a href="/admin?" >Admin home</a>
+            {% if distributerID != 0 %}
+            > <a href="/editDistributer?distributerID={{distributer.key.id()}}" >{{distributer.name}}</a>
+            {% endif %}
+        </div>
+
+
+        <div id="Inputs" class="form">
+            <form action="/saveDistributer" method="post">
+                <div class="field-wrap">
+                    <label>Status</label>
+                    <select name="Status" style="width: 7em;">
+                        <option value="Pending" {% if distributer.status == 'Pending' %}selected{% endif %}>Pending</option>
+                        <option value="Active" {% if distributer.status == 'Active' %}selected{% endif %}>Active</option>
+                        <option value="Disabled" {% if distributer.status == 'Disabled' %}selected{% endif %}>Disabled</option>
+                    </select>
+                </div>
+
+                <div class="field-wrap">
+                    <label>AddressType</label>
+                    <select id="addressType" name="AddressType" style="width: 7em;" onchange="showInputs();">
+                        <option value="BIP44" {% if distributer.addressType == 'BIP44' %}selected{% endif %}>BIP44</option>
+                        <option value="PrivKey" {% if distributer.addressType == 'PrivKey' %}selected{% endif %}>Private key</option>
+                    </select>
+                </div>
+
+
+
+                <div id="walletIndex" class="field-wrap">
+                    <label>Wallet index</label>
+                    <input name="WalletIndex" type="number" value="{{distributer.walletIndex}}" style="width: 3em;">
+                </div>
+
+                <div id="privateKey" class="field-wrap">
+                    <label>Private Key</label>
+                    <input name="PrivateKey" type="text" value="{{distributer.privateKey}}" style="width: 30em;">
+                </div>
+
+                <div class="field-wrap">
+                    <label>Bitcoin address</label>
+                    <input name="Address" type="text" value="{{distributer.address}}"  disabled>
+                </div>
+
+                <input name="DistributerID" type="hidden" value="{{distributer.key.id()}}">
+
+                <div class="field-wrap">
+                    <label>Name</label>
+                    <input name="DistributerName" type="text" value="{{distributer.name}}">
+                </div>
+
+                <div class="field-wrap">
+                    <label>Description</label>
+                    <textarea name="Description" type="text" rows="20">{{distributer.description}}</textarea>
+                </div>
+
+                <div class="field-wrap">
+                    <label>Youtube</label>
+                    <input name="Youtube" type="text" value="{{distributer.youtube}}">
+                </div>
+
+
+
+                {% if distributer.youtube != '' %}
+                <div class="DistributerYoutube">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{distributer.youtube}}" frameborder="0" allowfullscreen></iframe>
+                </div>
+                {% endif %}
+
+                <div class="field-wrap">
+                    <label>Distribution Source</label>
+                    <select id="distributionSource" name="DistributionSource" class="inputFields" onchange="showInputs();">
+                        <option value="Custom" {% if distributer.distributionSource == 'Custom' %}selected{% endif %}>Custom distribution</option>
+                        <option value="SIL" {% if distributer.distributionSource == 'SIL' %}selected{% endif %}>Simplified Inputs List</option>
+                        <option value="LBL" {% if distributer.distributionSource == 'LBL' %}selected{% endif %}>Linked Balance List</option>
+                        <option value="LRL" {% if distributer.distributionSource == 'LRL' %}selected{% endif %}>Linked Received List</option>
+                        <option value="LSL" {% if distributer.distributionSource == 'LSL' %}selected{% endif %}>Linked Sent List</option>
+                    </select>
+                </div>
+
+                <div id="customDistributiondiv" class="field-wrap">
+                    <label>Custom distribution</label>
+                    <textarea name="CustomDistribution" type="text" rows="5">{{distributer.custom}}</textarea>
+                </div>
+
+                <div id="registrationAddressdiv" class="field-wrap">
+                    <label>Registration Address</label>
+                    <input name="RegistrationAddress" type="text" value="{{distributer.registrationAddress}}">
+                </div>
+
+                <div id="registrationXPUBdiv" class="field-wrap">
+                    <label>Registration XPUB</label>
+                    <textarea name="RegistrationXPUB" type="text" rows="2">{{distributer.registrationXpub}}</textarea>
+                </div>
+
+                <div id="registrationBlockheightdiv" class="field-wrap">
+                    <label>Registration blockheight</label>
+                    <input name="RegistrationBlockheight" type="number" value="{{distributer.registrationBlockheight}}" style="width: 7em;">
+                </div>
+
+
+                <div class="field-wrap">
+                    <label>Creator</label>
+                    <input name="Creator" type="text" value="{{distributer.creator}}">
+                </div>
+
+                <div class="field-wrap">
+                    <label>Creator Email</label>
+                    <input name="CreatorEmail" type="text" value="{{distributer.creatorEmail}}">
+                </div>
+
+
+                <div class="field-wrap">
+                    <label>Visibility</label>
+                    <select name="Visibility" style="width: 7em;">
+                        <option value="Public" {% if distributer.visibility == 'Public' %}selected{% endif %}>Public</option>
+                        <option value="Private" {% if distributer.visibility == 'Private' %}selected{% endif %}>Private</option>
+                    </select>
+                </div>
+
+                <div class="field-wrap">
+                    <label>Threshold</label>
+                    <input name="Threshold" type="number" value="{{distributer.threshold}}" style="width: 7em;">
+                </div>
+
+                <div class="field-wrap">
+                    <label>Minimum output amount</label>
+                    <input name="MinimumAmount" type="number" value="{{distributer.minimumAmount}}" style="width: 7em;">
+                </div>
+
+
+                <div class="field-wrap">
+                    <label>Transaction fee</label>
+                    <input name="TransactionFee" type="number" value="{{distributer.transactionFee}}" style="width: 7em;">
+                </div>
+
+
+                <div class="field-wrap">
+                    <label>Distribution Fee Percent (0 for no distribution fee)</label>
+                    <input name="FeePercent" type="number" step="0.01" value="{{distributer.feePercent}}" style="width: 7em;">
+                </div>
+
+                <div class="field-wrap">
+                    <label>Distribution Fee Address</label>
+                    <input name="FeeAddress" type="text" value="{{distributer.feeAddress}}" >
+                </div>
+
+
+                <input class="button center" type="submit" name="saveDistributer" value="Save distributer" >
+
+            </form>
+        </div>
+
+
+
+
+        <div class="navigationTrail">
+            <a href="/admin?" >Admin home</a>
+            {% if distributerID != 0 %}
+            > <a href="/editDistributer?distributerID={{distributer.key.id()}}" >{{distributer.name}}</a>
+            {% endif %}
+        </div>
+        {{ googleAnalyticsHTML|safe }}
+          
+        <div class="push"></div>
+    </div> 
+            
+    {{ footerHTML|safe }}
+  
+
+
+ 
+</body>
+</html>
+
+
+{% endautoescape %}

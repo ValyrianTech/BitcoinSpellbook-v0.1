@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+{% autoescape true %}
+
+<html>
+<head>
+    {{ cssHTML|safe }}
+    {{ metaHTML|safe }}
+    {{ scriptsHTML|safe }}
+
+</head>
+<body>
+    {{ navigationHTML|safe }}
+
+    <div id="wrapper">
+        <div id="documentation-wrapper">
+            <div class="documentation-title">API documentation</div>
+            <div class="documentation-section" id="transactions">
+                <div class="documentation-header">Blockchaindata: transactions</div>
+
+                <div class="documentation-description">
+
+                    <p>Returns a JSON-object containing all transactions received by a specified Bitcoin address</p>
+
+                </div>
+
+
+
+                <div class="documentation-arguments">
+                    Arguments:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Required</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>format</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>Format of the results, should be “json”</td>
+                        </tr>
+
+                        <tr>
+                            <td>address</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>A Bitcoin address</td>
+                        </tr>
+
+
+
+                    </table>
+                </div>
+
+                <div class="documentation-example-input">
+                    Example: <a href="transactions?format=json&address=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A">transactions?format=json&address=1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A</a>
+                </div>
+
+                <div class="documentation-return-values">
+                    Return values:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>success</td>
+                            <td>integer</td>
+                            <td>1 = success, 0 = fail</td>
+                        </tr>
+
+                        <tr>
+                            <td>TXS</td>
+                            <td>array</td>
+                            <td>list of all transactions</td>
+                        </tr>
+
+                        <tr>
+                            <td>- txid</td>
+                            <td>string</td>
+                            <td>Transaction hash</td>
+                        </tr>
+
+                        <tr>
+                            <td>- blockheight</td>
+                            <td>integer</td>
+                            <td>Block in which this transaction is included.</td>
+                        </tr>
+
+                        <tr>
+                            <td>- confirmations</td>
+                            <td>integer</td>
+                            <td>Number of confirmations the transaction has.</td>
+                        </tr>
+
+                        <tr>
+                            <td>- inputs</td>
+                            <td>array</td>
+                            <td>list of all inputs</td>
+                        </tr>
+
+                        <tr>
+                            <td>- - address</td>
+                            <td>string</td>
+                            <td>Address of the input</td>
+                        </tr>
+
+                        <tr>
+                            <td>- - value</td>
+                            <td>integer</td>
+                            <td>Value of the input</td>
+                        </tr>
+
+                        <tr>
+                            <td>- outputs</td>
+                            <td>array</td>
+                            <td>list of all outputs</td>
+                        </tr>
+
+                        <tr>
+                            <td>- - address</td>
+                            <td>string</td>
+                            <td>Address of the output</td>
+                        </tr>
+
+                        <tr>
+                            <td>- - value</td>
+                            <td>integer</td>
+                            <td>Value of the output</td>
+                        </tr>
+
+                        <tr>
+                            <td>- - spent</td>
+                            <td>boolean</td>
+                            <td>Has the output been spent?</td>
+                        </tr>
+
+                        <tr>
+                            <td>- primeInputAddress</td>
+                            <td>string</td>
+                            <td>the first inputAddress sorted alphabetically</td>
+                        </tr>
+
+                         <tr>
+                            <td>- receivingValue</td>
+                            <td>integer</td>
+                            <td>The value that was received in this transaction</td>
+                        </tr>
+
+                         <tr>
+                            <td>- receiving</td>
+                            <td>boolean</td>
+                            <td>Was the transaction received by or sent by this address?</td>
+                        </tr>
+
+                        <tr>
+                            <td>provider</td>
+                            <td>string</td>
+                            <td>3rd party provider that supplied the data.</td>
+                        </tr>
+
+                        <tr>
+                            <td>error</td>
+                            <td>string</td>
+                            <td>error message in case something went wrong</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="documentation-return-example">
+                Return example:
+                <span><pre>
+{
+    "success": 1,
+    "TXS":[{u'blockheight': 375786,
+              u'confirmations': 32673,
+              u'inputs': [{u'address': u'1Robbk6PuJst6ot6ay2DcVugv8nxfJh5y',
+                           u'value': 220125}],
+              u'outputs': [{u'address': u'1Robbk6PuJst6ot6ay2DcVugv8nxfJh5y',
+                            u'spent': False,
+                            u'value': 110716},
+                           {u'address': u'1NC8LqAB99bYM9wVoD2grdYMMZAhjwy57A',
+                            u'spent': True,
+                            u'value': 100000}],
+              u'primeInputAddress': u'1Robbk6PuJst6ot6ay2DcVugv8nxfJh5y',
+              u'receivedValue': 100000,
+              u'receiving': True,
+              u'txid': u'5aeec17e3ff00542240bd7b47188c396342b6bebd2351e500d561b70b21c2eb8'},
+...
+]}
+                </pre></span>
+                </div>
+            </div>
+
+            <div class="documentation-section" id="utxos">
+                <div class="documentation-header">Blockchaindata: utxos</div>
+
+                <div class="documentation-description">
+
+                    <p>Returns a JSON-object containing all unspent transaction outputs for a list of Bitcoin addresses.
+                    Multiple addresses seperated by "|".</p>
+
+                </div>
+
+
+
+                <div class="documentation-arguments">
+                    Arguments:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Required</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>format</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>Format of the results, should be “json”</td>
+                        </tr>
+
+                        <tr>
+                            <td>addresses</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>A list of Bitcoin addresses, separated by "|".</td>
+                        </tr>
+
+
+
+                    </table>
+                </div>
+
+                <div class="documentation-example-input">
+                    Example: <a href="utxos?format=json&addresses=1Robbk6PuJst6ot6ay2DcVugv8nxfJh5y|1SansacmMr38bdzGkzruDVajEsZuiZHx9">utxos?format=json&addresses=1Robbk6PuJst6ot6ay2DcVugv8nxfJh5y|1SansacmMr38bdzGkzruDVajEsZuiZHx9</a>
+                </div>
+
+                <div class="documentation-return-values">
+                    Return values:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>success</td>
+                            <td>integer</td>
+                            <td>1 = success, 0 = fail</td>
+                        </tr>
+
+                        <tr>
+                            <td>UTXOs</td>
+                            <td>array</td>
+                            <td>list of all unspent transaction outputs</td>
+                        </tr>
+
+                        <tr>
+                            <td>- confirmations</td>
+                            <td>integer</td>
+                            <td>Number of confirmations of the unspent transaction output</td>
+                        </tr>
+
+                        <tr>
+                            <td>- output</td>
+                            <td>string</td>
+                            <td>format: TransactionId:index</td>
+                        </tr>
+
+                        <tr>
+                            <td>- address</td>
+                            <td>string</td>
+                            <td>Address of the unspent transaction output</td>
+                        </tr>
+
+                        <tr>
+                            <td>- value</td>
+                            <td>integer</td>
+                            <td>Value of the unspent transaction output</td>
+                        </tr>
+
+                        <tr>
+                            <td>- block_height</td>
+                            <td>string</td>
+                            <td>Blockheight of the unspent transaction output.</td>
+                        </tr>
+
+                        <tr>
+                            <td>provider</td>
+                            <td>string</td>
+                            <td>3rd party provider that supplied the data.</td>
+                        </tr>
+
+                        <tr>
+                            <td>error</td>
+                            <td>string</td>
+                            <td>error message in case something went wrong</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="documentation-return-example">
+                Return example:
+                <span><pre>
+{
+    "success": 1,
+    "UTXOs": [{u'address': u'1Robbk6PuJst6ot6ay2DcVugv8nxfJh5y',
+              u'block_height': 371357,
+              u'confirmations': 37103,
+              u'output': u'39bb5f5d50882227f93b980df15ea676414f0363770a0174a13c8f55c877b598:1',
+              u'value': 5000},
+             {u'address': u'1Robbk6PuJst6ot6ay2DcVugv8nxfJh5y',
+              u'block_height': 375786,
+              u'confirmations': 32674,
+              u'output': u'5aeec17e3ff00542240bd7b47188c396342b6bebd2351e500d561b70b21c2eb8:0',
+              u'value': 110716},
+              ...
+    ],
+    "provider": "Blocktrail.com"
+}
+                </pre></span>
+                </div>
+            </div>
+
+
+            <div class="documentation-section" id="balances">
+                <div class="documentation-header">Blockchaindata: balances</div>
+
+                <div class="documentation-description">
+
+                    <p>Returns a JSON-object containing the balances for a list of Bitcoin addresses.
+                    Multiple addresses seperated by "|".</p>
+
+                </div>
+
+
+
+                <div class="documentation-arguments">
+                    Arguments:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Required</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>format</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>Format of the results, should be “json”</td>
+                        </tr>
+
+                        <tr>
+                            <td>addresses</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>A list of Bitcoin address, separated by "|".</td>
+                        </tr>
+
+
+
+                    </table>
+                </div>
+
+                <div class="documentation-example-input">
+                    Example: <a href="balances?format=json&addresses=1Robbk6PuJst6ot6ay2DcVugv8nxfJh5y|1SansacmMr38bdzGkzruDVajEsZuiZHx9">balances?format=json&addresses=1Robbk6PuJst6ot6ay2DcVugv8nxfJh5y|1SansacmMr38bdzGkzruDVajEsZuiZHx9</a>
+                </div>
+
+                <div class="documentation-return-values">
+                    Return values:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>success</td>
+                            <td>integer</td>
+                            <td>1 = success, 0 = fail</td>
+                        </tr>
+
+                        <tr>
+                            <td>balances</td>
+                            <td>dict</td>
+                            <td>Dictionary containing all balances of the supplied addresses</td>
+                        </tr>
+
+                        <tr>
+                            <td>- balance</td>
+                            <td>integer</td>
+                            <td>Balance of the address in Satoshis</td>
+                        </tr>
+
+                        <tr>
+                            <td>- received</td>
+                            <td>integer</td>
+                            <td>Total received value of the address in Satoshis</td>
+                        </tr>
+
+                        <tr>
+                            <td>- sent</td>
+                            <td>integer</td>
+                            <td>Total sent value of the address in Satoshis</td>
+                        </tr>
+
+                        <tr>
+                            <td>provider</td>
+                            <td>string</td>
+                            <td>3rd party provider that supplied the data.</td>
+                        </tr>
+
+                        <tr>
+                            <td>error</td>
+                            <td>string</td>
+                            <td>error message in case something went wrong</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="documentation-return-example">
+                Return example:
+                <span><pre>
+{
+    "success": 1,
+    "balances": {u'1Robbk6PuJst6ot6ay2DcVugv8nxfJh5y': {u'balance': 389493,
+                                                        u'received': 1534705,
+                                                        u'sent': 1145212},
+                u'1SansacmMr38bdzGkzruDVajEsZuiZHx9': {u'balance': 626643,
+                                                        u'received': 1325281,
+                                                        u'sent': 698638}},
+    "provider": "Blocktrail.com",
+}
+                </pre></span>
+                </div>
+            </div>
+
+
+
+
+            <div class="documentation-section" id="primeInputAddress">
+                <div class="documentation-header">Blockchaindata: primeInputAddress</div>
+
+                <div class="documentation-description">
+
+                    <p>Returns a JSON-object containing the primeInputAddress of a transaction. This is the first of the input addresses sorted alphabetically.</p>
+
+                </div>
+
+
+
+                <div class="documentation-arguments">
+                    Arguments:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Required</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>format</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>Format of the results, should be “json”</td>
+                        </tr>
+
+                        <tr>
+                            <td>txid</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>A transaction hash</td>
+                        </tr>
+
+
+
+                    </table>
+                </div>
+
+                <div class="documentation-example-input">
+                    Example: <a href="primeInputAddress?format=json&txid=39bb5f5d50882227f93b980df15ea676414f0363770a0174a13c8f55c877b598">primeInputAddress?format=json&txid=39bb5f5d50882227f93b980df15ea676414f0363770a0174a13c8f55c877b598</a>
+                </div>
+
+                <div class="documentation-return-values">
+                    Return values:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>success</td>
+                            <td>integer</td>
+                            <td>1 = success, 0 = fail</td>
+                        </tr>
+
+                        <tr>
+                            <td>PrimeInputAddress</td>
+                            <td>string</td>
+                            <td>Prime Input Address of the transaction</td>
+                        </tr>
+
+                        <tr>
+                            <td>provider</td>
+                            <td>string</td>
+                            <td>3rd party provider that supplied the data.</td>
+                        </tr>
+
+                        <tr>
+                            <td>error</td>
+                            <td>string</td>
+                            <td>error message in case something went wrong</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="documentation-return-example">
+                Return example:
+                <span><pre>
+{
+    "success": 1,
+    "PrimeInputAddress": "1ETPtznVTgowgGdfqREtDtmA6JXteBxFEL",
+    "provider": "Blocktrail.com"
+}
+                </pre></span>
+                </div>
+            </div>
+
+
+            <div class="documentation-section" id="latestBlock">
+                <div class="documentation-header">Blockchaindata: latestBlock</div>
+
+                <div class="documentation-description">
+
+                    <p>Returns a JSON-object containing the details of the latest Bitcoin block.</p>
+
+                </div>
+
+
+
+                <div class="documentation-arguments">
+                    Arguments:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Required</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>format</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>Format of the results, should be “json”</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+                <div class="documentation-example-input">
+                    Example: <a href="latestBlock?format=json">latestBlock?format=json</a>
+                </div>
+
+                <div class="documentation-return-values">
+                    Return values:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>success</td>
+                            <td>integer</td>
+                            <td>1 = success, 0 = fail</td>
+                        </tr>
+
+                        <tr>
+                            <td>latestBlock</td>
+                            <td>dict</td>
+                            <td>dictionary containing the details of the latest block</td>
+                        </tr>
+
+                        <tr>
+                            <td>- merkleroot</td>
+                            <td>string</td>
+                            <td>merkleroot of all transactions in this block</td>
+                        </tr>
+
+                        <tr>
+                            <td>- time</td>
+                            <td>integer</td>
+                            <td>timestamp of this block</td>
+                        </tr>
+
+                        <tr>
+                            <td>- hash</td>
+                            <td>string</td>
+                            <td>Block hash</td>
+                        </tr>
+
+                        <tr>
+                            <td>- size</td>
+                            <td>integer</td>
+                            <td>size of this block</td>
+                        </tr>
+
+                        <tr>
+                            <td>- height</td>
+                            <td>integer</td>
+                            <td>Height of this block</td>
+                        </tr>
+
+                        <tr>
+                            <td>error</td>
+                            <td>string</td>
+                            <td>error message in case something went wrong</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="documentation-return-example">
+                Return example:
+                <span><pre>
+{
+    "success": 1,
+    "latestBlock": {
+        "merkleroot": "c89cc94dca93356013490802b3be296b01d9861f525595841f29632f94dc8875",
+        "time": 1453939350,
+        "hash": "0000000000000000048cdd145fac0aa26c16b3071c47747bd9eaf34cc3389708",
+        "size": 949137,
+        "height": 395352
+    },
+    "provider": "Blocktrail.com",
+}
+                </pre></span>
+                </div>
+            </div>
+
+            <div class="documentation-section" id="block">
+                <div class="documentation-header">Blockchaindata: block</div>
+
+                <div class="documentation-description">
+
+                    <p>Returns a JSON-object containing the details of the Bitcoin block at the specified height.</p>
+
+                </div>
+
+
+                <div class="documentation-arguments">
+                    Arguments:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Required</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>format</td>
+                            <td>yes</td>
+                            <td>string</td>
+                            <td>Format of the results, should be “json”</td>
+                        </tr>
+
+                        <tr>
+                            <td>block</td>
+                            <td>yes</td>
+                            <td>integer</td>
+                            <td>Blockheight</td>
+                        </tr>
+
+                    </table>
+                </div>
+
+                <div class="documentation-example-input">
+                    Example: <a href="block?format=json&block=395352">block?format=json&block=395352</a>
+                </div>
+
+                <div class="documentation-return-values">
+                    Return values:
+                    <table class="flatTable">
+                        <tr>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                        </tr>
+
+                        <tr>
+                            <td>success</td>
+                            <td>integer</td>
+                            <td>1 = success, 0 = fail</td>
+                        </tr>
+
+                        <tr>
+                            <td>block</td>
+                            <td>dict</td>
+                            <td>dictionary containing the details of the latest block</td>
+                        </tr>
+
+                        <tr>
+                            <td>- merkleroot</td>
+                            <td>string</td>
+                            <td>merkleroot of all transactions in this block</td>
+                        </tr>
+
+                        <tr>
+                            <td>- time</td>
+                            <td>integer</td>
+                            <td>timestamp of this block</td>
+                        </tr>
+
+                        <tr>
+                            <td>- hash</td>
+                            <td>string</td>
+                            <td>Block hash</td>
+                        </tr>
+
+                        <tr>
+                            <td>- size</td>
+                            <td>integer</td>
+                            <td>size of this block</td>
+                        </tr>
+
+                        <tr>
+                            <td>- height</td>
+                            <td>integer</td>
+                            <td>Height of this block</td>
+                        </tr>
+
+                        <tr>
+                            <td>error</td>
+                            <td>string</td>
+                            <td>error message in case something went wrong</td>
+                        </tr>
+                    </table>
+
+                </div>
+
+                <div class="documentation-return-example">
+                Return example:
+                <span><pre>
+{
+    "success": 1,
+    "block": {
+        "merkleroot": "c89cc94dca93356013490802b3be296b01d9861f525595841f29632f94dc8875",
+        "time": 1453939350,
+        "hash": "0000000000000000048cdd145fac0aa26c16b3071c47747bd9eaf34cc3389708",
+        "size": 949137,
+        "height": 395352
+    },
+    "provider": "Blocktrail.com",
+}
+                </pre></span>
+                </div>
+            </div>
+
+
+            {{ googleAnalyticsHTML|safe }}
+        </div>
+    </div>
+
+    {{ footerHTML|safe }}
+</body>
+</html>
+{% endautoescape %}
