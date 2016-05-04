@@ -11,32 +11,14 @@ HDForwarder/.idea
 DistributeBTC/.idea
 BitcoinWells/.idea
 
-
+*.pyc
 
 TestSpell.py
-TestSpell.pyc
-
-
 Demo_Blockchaindata.py
-Demo_Blockchaindata.pyc
-
 Demo_SimplifiedInputsList.py
-Demo_SimplifiedInputsList.pyc
-
 Demo_Blocklinker.py
-Demo_Blocklinker.pyc
-
 Demo_ProportionalRandom.py
-Demo_ProportionalRandom.pyc
-
 Demo_Bitvoter.py
-Demo_Bitvoter.pyc
-
 Demo_HDForwarder.py
-Demo_HDForwarder.pyc
-
 Demo_DistributeBTC.py
-Demo_DistributeBTC.pyc
-
 Demo_BitcoinWells.py
-Demo_BitcoinWells.pyc
