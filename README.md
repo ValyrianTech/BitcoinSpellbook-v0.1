@@ -21,11 +21,10 @@ BitcoinWells        : reveal text or link or send email when a bitcoin address r
 
 
 
-### Support further development:
+### Donations:
 
 1Woutere8RCF82AgbPCc5F4KuYVvS4meW  
-or  
-https://www.indiegogo.com/projects/bitcoin-spellbook  
+  
 
 
 ### Special thanks to:
